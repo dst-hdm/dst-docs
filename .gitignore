@@ -1,6 +1,8 @@
 # ignore environment files
 .env
 */.env
+.venv
+*/.venv
 
 # ignore macOS folder attribute files
 .DS_Store

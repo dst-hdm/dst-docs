@@ -1,1 +1,463 @@
-# DST Dokumentation: Presentation 
+# Aufbau der Präsentation 
+## Inhaltsangabe für die Präsentation
+- Beispiel Hurrikan Katrina 
+- Leitfrage
+- Datenquellen
+- Globaler Temperaturverlauf
+- Betrachtung von Naturkatastrophen
+- Zusammenhang zwischen Temperatur und Naturkatastrophen
+- Fazit
+- Handlungsempfehlungen
+- Anmerkung
+Nachdem der Inhaltsangabe, erfolgt eine kurze Erläuterung zu unseren Quellen. Hier kann jedoch einfach auf [Kapitel 2](#quellen) verwiesen werden.
+
+##  Erklärung zu den präsentierten Diagrammen 
+### Durschnittstemperatur Verlauf
+
+```{python}
+import pandas as pd
+import altair as alt
+from vega_datasets import data
+
+alt.data_transformers.disable_max_rows()
+
+df_nd = pd.read_csv('./data/InternationalDisaster_cleaned.csv')
+df_nd_full = pd.read_csv('data/InternationalDisaster.csv')
+df_nd_grouped = pd.read_csv('data/InternationalDisaster_grouped.csv')
+df_temp = pd.read_csv('data/GlobalLandTemperatur_cleaned.csv')
+df_temp_agg = pd.read_csv('data/GlobalLandTemperatur_aggregated.csv')
+df_temp_nd_combined = pd.read_csv('data/df_temp_nd_combined.csv')
+countries = alt.topo_feature(data.world_110m.url, 'countries')
+
+chart_title_color = "#d6d6d6"
+chart_line_color = "#3A86FF"
+chart_marker_color = "#e00707"
+
+nd_type_colors = {
+    'Drought': '#FFBC42',
+    'Earthquake': '#b55a1d',
+    'Epidemic': '#06D6A0',
+    'Extreme temperature': '#EF476F',
+    'Flood': '#3A86FF',
+    'Fog': '#118AB2',
+    'Impact': '#16225c',
+    'Infestation': '#2f9e29',
+    'Mass movement (dry)': '#78259c',
+    'Mass movement (wet)': '#512599',
+    'Storm': '#287fa1',
+    'Volcanic activity': '#ab4c29',
+    'Wildfire': '#b52222'
+}
+
+nd_type_colors = {
+    'Drought': '#FFBC42',
+    'Earthquake': '#b55a1d',
+    'Epidemic': '#06D6A0',
+    'Extreme temperature': '#EF476F',
+    'Flood': '#3A86FF',
+    'Fog': '#118AB2',
+    'Impact': '#16225c',
+    'Infestation': '#2f9e29',
+    'Mass movement (dry)': '#78259c',
+    'Mass movement (wet)': '#512599',
+    'Storm': '#287fa1',
+    'Volcanic activity': '#ab4c29',
+    'Wildfire': '#b52222'
+}
+
+nd_type_colors_red = {
+    'Extreme temperature': nd_type_colors['Extreme temperature'],
+    'Storm': nd_type_colors['Storm'],
+    'Flood': nd_type_colors['Flood']
+}
+
+# | title: Iowa Electricity
+global_avg_temp = df_temp_agg.groupby(
+    'Year')['AverageTemperature'].mean().reset_index()
+
+global_avg_temp['Year'] = pd.to_datetime(
+    global_avg_temp['Year'], format='%Y')
+global_avg_temp['Year'] = global_avg_temp['Year'].dt.year
+
+global_avg_temp['AverageTemperature'] = global_avg_temp['AverageTemperature'].round(
+    2)
+
+glob_temp_chart = alt.Chart(global_avg_temp).mark_line(stroke=chart_line_color).encode(
+    x=alt.X('Year:O', axis=alt.Axis(
+        title='',
+        labelAngle=0,
+        values=list(range(global_avg_temp['Year'].min(
+        ), global_avg_temp['Year'].max() + 1, 5)),
+        titleAnchor='start',
+        labelColor='white',
+    )),
+    y=alt.Y('AverageTemperature:Q', axis=alt.Axis(
+        title='Temperatur in °C',
+        titleAnchor='start',
+        labelColor='white',
+        titleColor='white',
+    ), scale=alt.Scale(
+        domain=[18, 21])),
+    tooltip=['Year', 'AverageTemperature']
+).properties(
+    width=950,
+    title={
+        "text": "Globaler Temperaturverlauf (1920 – 2013)",
+        "fontSize": 18,
+        "fontWeight": 300,
+        "anchor": 'start',
+        "color": chart_title_color,
+    },
+)
+
+
+glob_temp_regression = glob_temp_chart.transform_regression(
+    'Year', 'AverageTemperature', method='linear'
+).mark_line(color=chart_marker_color)
+
+text_at_end = alt.Chart(pd.DataFrame({'end_position': [19.8]})).mark_text(
+    align='left',
+    baseline='middle',
+    dx=360,
+    dy=0,
+    color=chart_marker_color,
+    text='Anstieg: 0.8 °C',
+    fontWeight=800,
+    fontSize=14
+).encode(
+    y='end_position:Q'
+)
+
+
+glob_temp_chart.configure(background="rgba(0, 0, 0, 0)")
+```
+
+**Ziel:** 
+
+- Klarer und eindeutiger Visualisierung des Temperaturanstiegs um 0,8 Grad
+
+
+### Globale Naturkatastrophen 
+
+```{python}
+
+df_nd_filtered = df_nd_grouped[(df_nd_grouped['Frequency'] > 0) & ((
+    df_nd_grouped['Disaster Type'] == 'Flood') | (df_nd_grouped['Disaster Type'] == 'Storm') | (df_nd_grouped['Disaster Type'] == 'Extreme temperatur'))]
+global_disaster_freq = df_nd_filtered.groupby(
+    ['Start Year'])['Frequency'].sum().reset_index()
+
+nd_line_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_color).encode(
+    x=alt.X('Start Year:O', axis=alt.Axis(
+        title='',
+        labelAngle=0,
+        values=list(range(global_avg_temp['Year'].min(
+        ), global_avg_temp['Year'].max() + 1, 5)),
+        labelColor='white',
+    )),
+    y=alt.Y('Frequency:Q').axis(
+        title='Häufigkeit',
+        titleAnchor='start',
+        labelColor='white',
+        titleColor='white'
+    ),
+).properties(
+    width=950,
+    height=290,
+    title={
+        "text": "Weltweite Häufigkeit pro Jahr: Stürmen, Extremtemperaturen und Überschwemmungen (1920 – 2013)",
+        "fontSize": 18,
+        "fontWeight": 300,
+        "anchor": 'start',
+        "color": chart_title_color,
+    },
+)
+nd_line_chart.configure(background="rgba(0, 0, 0, 0)")
+```
+
+**Ziel:**
+
+- durch den Linechart bietet sich ein gute Möglichkeit den Trend der zunehmenden Häufigkeit darzustellen. 
+```{python}
+nd_type_filter_flood = alt.FieldEqualPredicate(
+    field='Disaster Type', equal='Flood')
+
+global_disaster_freq = df_nd_grouped.groupby(['Start Year', 'Disaster Type'])[
+    'Frequency'].sum().reset_index()
+
+nd_flood_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_color).encode(
+    x=alt.X('Start Year:O', axis=alt.Axis(
+        title='',
+        labelAngle=0,
+        labelColor="white",
+        values=list(range(global_avg_temp['Year'].min(
+        ), global_avg_temp['Year'].max() + 1, 5)),
+    )),
+    y=alt.Y('Frequency:Q').axis(
+        title='Häufigkeit',
+        titleAnchor='start',
+        labelColor="white",
+        titleColor="white"
+    ),
+    color=alt.Color('Disaster Type:N',
+                    legend=None),
+    tooltip=['Start Year', 'Frequency', 'Disaster Type']
+).properties(
+    width=950,
+    height=250,
+    title={
+        "text": "Globale Häufigkeiten: Überschwemmungen (1920 – 2013)",
+        "fontSize": 18,
+        "fontWeight": 300,
+        "anchor": 'start',
+        "color": chart_title_color,
+    },
+).transform_filter(
+    nd_type_filter_flood
+)
+
+nd_flood_chart_text_point_2006 = alt.Chart(global_disaster_freq[(global_disaster_freq['Start Year'] == 2006) & (global_disaster_freq['Disaster Type'] == 'Flood')]).mark_point(color=chart_marker_color, size=300, strokeWidth=3).encode(
+    x='Start Year:O',
+    y='Frequency:Q',
+    text=alt.Text('Start Year:N', format='d')
+)
+
+nd_flood_chart.configure(background="rgba(0, 0, 0, 0)")
+```
+```{python}
+(nd_flood_chart + nd_flood_chart_text_point_2006).configure(background="rgba(0, 0, 0, 0)")
+```
+
+**Ziel:**
+
+- der Linechart veranschaulicht sehr gut, wie Häufigkeit in den letzten 3 Jahrzehneten gestiegen ist, deswegen haben wir uns hier auch für ein Linechart entschieden 
+- der Rotepunkt ist leicht zu erkennen und zeigt dem Zuschauer direkt auf welche Sequenz wir uns gerade beziehen 
+```{python}
+nd_type_filter_storm = alt.FieldEqualPredicate(
+    field='Disaster Type', equal='Storm')
+
+global_disaster_freq = df_nd_grouped.groupby(['Start Year', 'Disaster Type'])[
+    'Frequency'].sum().reset_index()
+
+nd_storm_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_color).encode(
+    x=alt.X('Start Year:O', axis=alt.Axis(
+        title='',
+        labelColor="white",
+        labelAngle=0,
+        values=list(range(global_avg_temp['Year'].min(
+        ), global_avg_temp['Year'].max() + 1, 5)),
+    )),
+    y=alt.Y('Frequency:Q').axis(
+        title='Häufigkeit',
+        labelColor="white",
+        titleAnchor='start',
+        titleColor="white"
+    ),
+    color=alt.Color('Disaster Type:N',
+                    legend=None),
+    tooltip=['Start Year', 'Frequency', 'Disaster Type']
+).properties(
+    width=950,
+    height=250,
+    title={
+        "text": "Globale Häufigkeiten: Stürme (1920 – 2013)",
+        "fontSize": 18,
+        "fontWeight": 300,
+        "anchor": 'start',
+        "color": chart_title_color,
+    },
+).transform_filter(
+    nd_type_filter_storm
+)
+
+nd_storm_chart_text_point_1990 = alt.Chart(global_disaster_freq[(global_disaster_freq['Start Year'] == 1990) & (global_disaster_freq['Disaster Type'] == 'Storm')]).mark_point(color=chart_marker_color, size=300, strokeWidth=3).encode(
+    x='Start Year:O',
+    y='Frequency:Q',
+    text=alt.Text('Start Year:N', format='d')
+)
+
+nd_storm_chart.configure(background="rgba(0, 0, 0, 0)")
+(nd_storm_chart + nd_storm_chart_text_point_1990).configure(background="rgba(0, 0, 0, 0)")
+```
+
+**Ziel:**
+
+- Der Linechart illustriertauch hier  überzeugend den Anstieg der Häufigkeit in den letzten drei Jahrzehnten. Aus diesem Grund haben wir uns für die Verwendung eines Linecharts entschieden.
+
+- Der rote Punkt ist gut erkennbar und zeigt dem Zuschauer sofort, auf welche Sequenz wir uns aktuell beziehen.
+```{python}
+nd_type_filter_extr_temp = alt.FieldEqualPredicate(
+    field='Disaster Type', equal='Extreme temperature')
+
+global_disaster_freq = df_nd_grouped.groupby(['Start Year', 'Disaster Type'])[
+    'Frequency'].sum().reset_index()
+
+nd_extr_temp_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_color).encode(
+    x=alt.X('Start Year:O', axis=alt.Axis(
+        title='',
+        labelColor="white",
+        labelAngle=0,
+        values=list(range(global_avg_temp['Year'].min(
+        ), global_avg_temp['Year'].max() + 1, 5)),
+    )),
+    y=alt.Y('Frequency:Q').axis(
+        title='Häufigkeit',
+        labelColor="white",
+        titleAnchor='start',
+        titleColor="white"
+    ),
+    color=alt.Color('Disaster Type:N',
+                    legend=None),
+    tooltip=['Start Year', 'Frequency', 'Disaster Type']
+).properties(
+    width=950,
+    height=250,
+    title={
+        "text": "Globale Häufigkeiten: Extremtemperaturen (1920 – 2013)",
+        "fontSize": 18,
+        "fontWeight": 300,
+        "anchor": 'start',
+        "color": chart_title_color,
+    },
+).transform_filter(
+    nd_type_filter_extr_temp
+)
+
+nd_extr_temp_chart_text_point_2012 = alt.Chart(global_disaster_freq[(global_disaster_freq['Start Year'] == 2012) & (global_disaster_freq['Disaster Type'] == 'Extreme temperature')]).mark_point(color='red', size=300, strokeWidth=3).encode(
+    x='Start Year:O',
+    y='Frequency:Q',
+    text=alt.Text('Start Year:N', format='d')
+)
+
+nd_extr_temp_chart.configure(background="rgba(0, 0, 0, 0)")
+```
+```{python}
+(nd_extr_temp_chart +
+ nd_extr_temp_chart_text_point_2012).configure(background="rgba(0, 0, 0, 0)")
+```
+
+**Ziel:**
+
+- auch hier ist wieder ein Linechart zu erkennen, damit klar der Anstieg Häufigkeit zu erkennen ist 
+
+```{python}
+global_disaster_freq = df_temp_nd_combined.groupby(['AverageTemperature', 'Disaster Type'])[
+    'Frequency'].sum().reset_index()
+
+global_disaster_freq_filtered = global_disaster_freq[(global_disaster_freq['Disaster Type'] == 'Flood') | (
+    global_disaster_freq['Disaster Type'] == 'Storm') | (global_disaster_freq['Disaster Type'] == 'Extreme temperature')]
+
+nd_temp_scatter = alt.Chart(global_disaster_freq_filtered).mark_circle().encode(
+    x=alt.X('AverageTemperature:O', title='Durchschnittstemperatur in °C ',
+            axis=alt.Axis(format=".3f",
+                          titleAnchor='start',
+                          titleColor="white",
+                          labelColor="white"
+                          )),
+    y=alt.Y('Frequency:Q', axis=alt.Axis(
+        title='Häufigkeit',
+        titleAnchor='start',
+        titleColor="white",
+        labelColor="white"
+    )),
+    color=alt.Color('Disaster Type',
+                    title='Katastrophentyp',
+                    scale=alt.Scale(domain=list(nd_type_colors_red.keys()),
+                                    range=list(nd_type_colors_red.values())),
+                    legend=alt.Legend(labelColor="white", titleColor="white")),
+    tooltip=['AverageTemperature', 'Frequency', 'Disaster Type']
+).properties(
+    width=850,
+    height=400,
+    title={
+        "text": "Häufigkeit der Katastrophentypen im Zusammenhang mit der Temperatur",
+        "fontSize": 18,
+        "fontWeight": 300,
+        "anchor": 'start',
+        "color": chart_title_color,
+    },
+)
+
+
+nd_temp_scatter.configure(background="rgba(0, 0, 0, 0)")
+```
+
+**Ziel:**
+
+- Präsentation einer Schlüsselfolie: Zusammenhang zwischen Temperatur und Naturkatastrophen.
+- Ein Scatterplot wird verwendet, um den Einfluss steigender Temperaturen auf die Häufigkeit von Naturkatastrophen klar zu veranschaulichen.
+- wir haben uns auch direkt für diese Folie entschieden, da wir uns damit direkt auf unsere Leitfrage wieder beziehen
+
+```{=html}
+<div class="infoCards">
+    <div class="infoCard bg-hot">
+        <div class="flexBetween">
+            <p>20 bis 30 °C</p>
+            <p>Katastrophen</p>
+        </div>
+        <hr>
+        <div class="flexBetween leftReset">
+            <h1>Heiß</h1>
+            <h1>4397</h1>
+        </div>
+    </div>
+    <div class="infoCard bg-warm">
+        <div class="flexBetween">
+            <p>10 bis 20 °C</p>
+            <p>Katastrophen</p>
+        </div>
+        <hr>
+        <div class="flexBetween leftReset">
+            <h1>Warm</h1>
+            <h1>1462</h1>
+        </div>
+    </div>
+    <div class="infoCard bg-normal">
+        <div class="flexBetween">
+            <p>0 bis 10 °C</p>
+            <p>Katastrophen</p>
+        </div>
+        <hr>
+        <div class="flexBetween leftReset">
+            <h1>Normal</h1>
+            <h1>1033</h1>
+        </div>
+    </div>
+    <div class="infoCard bg-cold">
+        <div class="flexBetween">
+            <p>-10 bis 0 °C</p>
+            <p>Katastrophen</p>
+        </div>
+        <hr>
+        <div class="flexBetween leftReset">
+            <h1>Kalt</h1>
+            <h1>99</h1>
+        </div>
+    </div>
+    <div class="infoCard bg-ice">
+        <div class="flexBetween">
+            <p>-20 bis -10 °C</p>
+            <p>Katastrophen</p>
+        </div>
+        <hr>
+        <div class="flexBetween leftReset">
+            <h1>Sehr kalt</h1>
+            <h1>13</h1>
+        </div>
+    </div>
+</div>
+```
+**Ziel:**
+
+- Hervorheben der variierenden Auswirkungen in unterschiedlichen Temperaturzonen.
+- Rückblickend auf eine der Haupterkenntnisse unserer Untersuchung reflektieren 
+- soll zum Wiederaufruf unserer Leitfrage führen 
+
+## Abschluss der Präsentation 
+Nach der umfassenden Präsentation sämtlicher Grafiken und Diagramme beziehen wir uns nun unmittelbar auf unsere Leitfrage und formulieren ein abschließendes **Fazit**. 
+<br>
+Dieses Fazit basiert auf den gewonnenen Erkenntnissen aus den vorliegenden Datensätzen. Nach der Zusammenfassung der Schlussfolgerungen wenden wir uns erneut an unser Publikum und geben klare Handlungsempfehlungen. Diese Empfehlungen sind prägnant und verständlich in Stichworten formuliert, um eine unmissverständliche Übermittlung an die Zuhörerschaft zu gewährleisten.
+<br>
+Es sei anzumerken, dass die Handlungsempfehlungen bewusst in kurzer und prägnanter Form gehalten sind, um eine klare Verständlichkeit für die Zuhörer zu gewährleisten. 
+<br>
+Zum Abschluss erfolgt eine kurze Anmerkung, welche auf die begrenzte Zeit der Präsentation und die nicht vollständige Erschöpfung aller Projektdetails hinweist.
+

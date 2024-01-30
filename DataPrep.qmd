@@ -1,1 +1,189 @@
-# DST Dokumentation: Data Preperation 
+# Dataprep
+
+Wir haben unsere beiden Datensätze unterschiedlich aufbereitet. Im Folgenden wird dies genauer erläutert.
+
+## Dataprepartion Naturaldisaster:
+
+- Nach einer kurzen explorativen Datenanalyse, in der wir die Spalten und NaN-Werte betrachteten, starteten wir direkt mit der Datenvorbereitung für den Datensatz zu Naturkatastrophen.
+- Zuerst normalisierten wir die Länder mithilfe der Koordinaten und wandelten sie direkt in DataFrames um.
+- Anschließend entfernten wir bestimmte Spalten, darunter "External IDs", "Event Name", "OFDA Response", "Declaration", "AID Contribution ('000 US$)", "Magnitude", "Magnitude Scale", "River Basin", "Admin Units", "Entry Date", "Last Update". Diese Spalten waren entweder für unsere Visualisierung nicht relevant oder enthielten zu viele NaN-Werte, was ihre Aussagekraft beeinträchtigt hätte.
+- Nach diesem Schritt entfernten wir die verbleibenden NaN-Werte.
+- Anschließend erfolgte die Umwandlung der Datentypen, wobei entsprechender Python-Code verwendet wurde.
+  - Der Code erstellte einen Pandas DataFrame namens `empty_df`, der alle möglichen Kombinationen von 'Country', 'Disaster Type' und 'Start Year' enthielt. Dieser DataFrame wurde durch die Verwendung von MultiIndex erstellt, um die verschiedenen Dimensionen zu berücksichtigen.
+  - Der Code gruppierte dann einen vorhandenen DataFrame (`df_cleaned`) nach den Spalten 'Country', 'Disaster Type', 'Start Year' und 'ISO', um die Häufigkeit von Katastrophen pro Land, Katastrophentyp und Startjahr zu zählen. Diese Informationen wurden in einem DataFrame namens `df_nd_grouped` gespeichert. Der leere DataFrame wurde dann mit diesen gruppierten Daten gemerged, um fehlende Werte mit 0 zu füllen. Schließlich erfolgte eine weitere Fusion mit einem DataFrame (`df_coordinates`), der Länderkoordinaten enthielt, um ein finales DataFrame namens `merged_group` zu erstellen.
+- Abschließend wurde der DataFrame als CSV-Datei gespeichert.
+- Die verwendeten Bibliotheken waren Pandas und NumPy. Zusätzlich wurde eine JSON-Datei für die Ländercodes importiert.
+
+```{python}
+import pandas as pd
+import altair as alt
+from vega_datasets import data
+
+alt.data_transformers.disable_max_rows()
+
+df_nd = pd.read_csv('./data/InternationalDisaster_cleaned.csv')
+df_nd_full = pd.read_csv('data/InternationalDisaster.csv')
+df_nd_grouped = pd.read_csv('data/InternationalDisaster_grouped.csv')
+df_temp = pd.read_csv('data/GlobalLandTemperatur_cleaned.csv')
+df_temp_agg = pd.read_csv('data/GlobalLandTemperatur_aggregated.csv')
+df_temp_nd_combined = pd.read_csv('data/df_temp_nd_combined.csv')
+countries = alt.topo_feature(data.world_110m.url, 'countries')
+
+chart_title_color = "#d6d6d6"
+chart_line_color = "#3A86FF"
+chart_marker_color = "#e00707"
+
+nd_type_colors = {
+    'Drought': '#FFBC42',
+    'Earthquake': '#b55a1d',
+    'Epidemic': '#06D6A0',
+    'Extreme temperature': '#EF476F',
+    'Flood': '#3A86FF',
+    'Fog': '#118AB2',
+    'Impact': '#16225c',
+    'Infestation': '#2f9e29',
+    'Mass movement (dry)': '#78259c',
+    'Mass movement (wet)': '#512599',
+    'Storm': '#287fa1',
+    'Volcanic activity': '#ab4c29',
+    'Wildfire': '#b52222'
+}
+
+nd_type_colors = {
+    'Drought': '#FFBC42',
+    'Earthquake': '#b55a1d',
+    'Epidemic': '#06D6A0',
+    'Extreme temperature': '#EF476F',
+    'Flood': '#3A86FF',
+    'Fog': '#118AB2',
+    'Impact': '#16225c',
+    'Infestation': '#2f9e29',
+    'Mass movement (dry)': '#78259c',
+    'Mass movement (wet)': '#512599',
+    'Storm': '#287fa1',
+    'Volcanic activity': '#ab4c29',
+    'Wildfire': '#b52222'
+}
+
+nd_type_colors_red = {
+    'Extreme temperature': nd_type_colors['Extreme temperature'],
+    'Storm': nd_type_colors['Storm'],
+    'Flood': nd_type_colors['Flood']
+}
+df_nd.head()
+```
+## Data Preparation für Temperatur:
+Zu Beginn der Datenvorbereitung für den Datensatz wurde jedem Land eine eindeutige UID-Zelle zugewiesen und diese wurde befüllt.
+Anschließend wurde die Datenstruktur durch das Betrachten von Head und Tail überprüft, woraufhin die verbleibenden NaN-Werte entfernt wurden.
+Danach wurden die Datentypen betrachtet und angepasst. Hierbei erfolgte eine Änderung des Datetime-Formats und der Datentyp der Spalte "Country" wurde zu "Category" geändert.
+Anschließend wurde der DataFrame nach der Jahreszahl gefiltert und alle UID-Werte, die als "Unknown" gekennzeichnet waren, wurden entfernt.
+Nach dieser Aktion erfolgte die Verknüpfung mit den ISO-Ländercodes, wobei entsprechender Python-Code verwendet wurde.
+Anschließend wurden die Ländernamen an die Ländernamen des Datensatzes zu Naturkatastrophen angepasst.
+Zum Abschluss wurde eine CSV-Datei erstellt.
+Die verwendeten Bibliotheken waren Pandas und pycountry.
+```{python}
+df_temp.head()
+
+```
+## Deep dive into Data:
+Um ein umfassenderes Verständnis für unsere Daten zu entwickeln und die Aussagekraft unserer Ergebnisse zu verstärken, haben wir mithilfe von Altair zunächst grundlegende Diagramme erstellt. Dies diente dazu, eine tiefere Einsicht in unsere Daten zu gewinnen. Wir begannen mit der Entwicklung eines Diagramms, das den Temperaturverlauf von 1920 bis 2013 zeigt. Anschließend erstellten wir ein Diagramm mit der Anzahl der Naturkatastrophen von 1920 bis 2013. Zusätzlich wurden weitere Balkendiagramme entworfen, um das Verhältnis verschiedener Naturkatastrophen zu visualisieren. Obwohl dieser Prozess mitunter anspruchsvoll war, erwies er sich als äußerst hilfreich für die Fortschritte in unserem Projekt. Die erstellten Diagramme ermöglichten uns tiefe Einblicke in unsere Daten zu gewinnen.
+
+Temperaturverlauf & Katastrophen (Sturm, Hitze und Fluten ) 1920 bis 2013
+```{python}
+# | title: Iowa Electricity
+global_avg_temp = df_temp_agg.groupby(
+    'Year')['AverageTemperature'].mean().reset_index()
+
+global_avg_temp['Year'] = pd.to_datetime(
+    global_avg_temp['Year'], format='%Y')
+global_avg_temp['Year'] = global_avg_temp['Year'].dt.year
+
+global_avg_temp['AverageTemperature'] = global_avg_temp['AverageTemperature'].round(
+    2)
+
+glob_temp_chart = alt.Chart(global_avg_temp).mark_line(stroke=chart_line_color).encode(
+    x=alt.X('Year:O', axis=alt.Axis(
+        title='',
+        labelAngle=0,
+        values=list(range(global_avg_temp['Year'].min(
+        ), global_avg_temp['Year'].max() + 1, 5)),
+        titleAnchor='start',
+        labelColor='black',
+    )),
+    y=alt.Y('AverageTemperature:Q', axis=alt.Axis(
+        title='Temperatur in °C',
+        titleAnchor='start',
+        labelColor='black',
+        titleColor='black',
+    ), scale=alt.Scale(
+        domain=[18, 21])),
+    tooltip=['Year', 'AverageTemperature']
+).properties(
+    width=950,
+    title={
+        "text": "Globaler Temperaturverlauf (1920 – 2013)",
+        "fontSize": 18,
+        "fontWeight": 300,
+        "anchor": 'start',
+        "color": chart_title_color,
+    },
+)
+
+
+glob_temp_regression = glob_temp_chart.transform_regression(
+    'Year', 'AverageTemperature', method='linear'
+).mark_line(color=chart_marker_color)
+
+text_at_end = alt.Chart(pd.DataFrame({'end_position': [19.8]})).mark_text(
+    align='left',
+    baseline='middle',
+    dx=360,
+    dy=0,
+    color=chart_marker_color,
+    text='Anstieg: 0.8 °C',
+    fontWeight=800,
+    fontSize=14
+).encode(
+    y='end_position:Q'
+)
+
+
+glob_temp_chart.configure(background="rgba(0, 0, 0, 0)")
+
+(glob_temp_chart + glob_temp_regression +
+ text_at_end).configure(background="rgba(0, 0, 0, 0)")
+```
+
+```{python}
+df_nd_filtered = df_nd_grouped[(df_nd_grouped['Frequency'] > 0) & ((
+    df_nd_grouped['Disaster Type'] == 'Flood') | (df_nd_grouped['Disaster Type'] == 'Storm') | (df_nd_grouped['Disaster Type'] == 'Extreme temperatur'))]
+global_disaster_freq = df_nd_filtered.groupby(
+    ['Start Year'])['Frequency'].sum().reset_index()
+
+nd_line_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_color).encode(
+    x=alt.X('Start Year:O', axis=alt.Axis(
+        title='',
+        labelAngle=0,
+        values=list(range(global_avg_temp['Year'].min(
+        ), global_avg_temp['Year'].max() + 1, 5)),
+        labelColor='black',
+    )),
+    y=alt.Y('Frequency:Q').axis(
+        title='Häufigkeit',
+        titleAnchor='start',
+        labelColor='black',
+        titleColor='black'
+    ),
+).properties(
+    width=950,
+    height=290,
+    title={
+        "text": "Weltweite Häufigkeit pro Jahr: Stürmen, Extremtemperaturen und Überschwemmungen (1920 – 2013)",
+        "fontSize": 18,
+        "fontWeight": 300,
+        "anchor": 'start',
+        "color": chart_title_color,
+    },
+)
+nd_line_chart.configure(background="rgba(0, 0, 0, 0)")
+```

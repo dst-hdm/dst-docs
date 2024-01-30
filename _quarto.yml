@@ -14,12 +14,13 @@ book:
   image: "/images/logo.png"
   favicon: "/images/logo.png"
   search:
-    type: overlay  
+    type: overlay
   chapters:
-    - index.qmd
-    - intro.qmd
-    - summary.qmd
-    - references.qmd
+    - Ideenfindung.qmd
+    - DataPrep.qmd
+    - Dashboard.qmd
+    - Presentation.qmd
+    - index.md
 
 format:
   html:

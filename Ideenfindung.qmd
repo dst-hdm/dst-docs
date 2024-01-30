@@ -1,1 +1,23 @@
-# DST Dokumentation: Ideenfindung 
+#  Themidee finden 
+
+##  Fragestellung erarbeiten: 
+
+Wir entschieden uns, uns mit einem Thema auseinanderzusetzen, das nicht nur unser persönliches Interesse weckt, sondern auch direkte Auswirkungen auf unser Leben hat. Infolgedessen rückte der Klimawandel und seine Einflüsse auf Naturkatastrophen in den Mittelpunkt unserer Aufmerksamkeit. Daher war es für uns selbstverständlich, die Auswirkungen des Klimawandels auf die Häufigkeit der Naturkatastrophen  anhand unserer Daten darzustellen.
+
+##  Erarbeitung Big Idea Worksheet: 
+
+Nachdem unsere erste Fragestellung im Raum stand, befassten wir uns mit der
+ Erstellung des Big Ideas Worksheets. Bei der Erstellung des Big Idea Worksheets stießen wir auf eine Herausforderung, insbesondere bei der genauen Bestimmung unserer Zielgruppe für das gewählte Thema. Aufgrund der Tatsache, dass der Klimawandel jeden Einzelnen betrifft, fiel es uns schwer, die Hörerschaft präzise zu definieren. Nichtsdestotrotz haben wir uns darauf verständigt, uns auf die Zielgruppe zu konzentrieren, die den größten Beitrag leisten kann oder das größte Interesse an unserer Visualisierung zeigt – insbesondere die Bereiche Politik und Wissenschaft.
+
+Eine weitere Schwierigkeit bestand in der Beschaffung von Daten, da die Dokumentation von Naturkatastrophen, insbesondere in der Vergangenheit, oft unzureichend ist.
+
+##  Datensatz Beschaffung: 
+
+Wir haben verschiedene Datenbanken durchsucht, um geeignete Daten für unsere Analyse zu finden. Unsere Auswahlkriterien umfassten den Zeitraum von 1920 bis mindestens 2010, verschiedene Kategorien von Naturkatastrophen, die Vertrauenswürdigkeit der Datenquellen und eine moderate Anzahl von fehlenden Werten bei den Temperaturdaten. In diesem Zusammenhang haben wir uns für ein Kaggle-Datenset entschieden, das ursprünglich vom Lawrence Berkeley National Laboratory stammt, sowie einen selbst zusammengestellten Datensatz aus der Public EM-DAT Database.
+
+Die Entscheidung für diese beiden Datensätze erfolgte aufgrund ihrer Erfüllung unserer spezifischen Anforderungen. Die Beschränkung auf zwei Datensätze ergab sich, da wir während unserer Recherche nur wenige Sets gefunden haben, die unseren Kriterien entsprachen. Insbesondere stellten NaN-Werte in Bezug auf Katastrophen in den 1980er Jahren eine Herausforderung dar. Darüber hinaus waren weitere Datensätze nicht erforderlich, da dies zu einer Duplizierung der Informationen geführt hätte, und der Naturaldisaster-Datensatz bereits ausreichende Informationen enthielt.
+
+Nachdem wir nun erfolgreich unsere Daten gefunden haben und unsere Big Idea Worksheets ausgerarbeitet haben, befassten wir uns mit dem Thema der Dataprepartion 
+	
+
+

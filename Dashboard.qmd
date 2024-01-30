@@ -1,1 +1,41 @@
-# DST Dokumentation: Dashboard
+# Entwicklung des Dashboards
+
+## Dashboard Konzeption: 
+- Bei der Konzeption des Dashboards orientierten wir uns an folgenden Anforderungen: Interaktivität, Nutzung von mindestens 5 verschiedenen Charttypen, sinnvolle Verwendung von Farben und Legenden sowie unterschiedliche visuelle Aufbereitung der Diagramme.
+- Die zugrunde liegende Aussage betonte die Wichtigkeit der Bewältigung des Klimawandels und der Minderung seiner Auswirkungen für den Schutz unseres Planeten, die Sicherheit der Menschheit und die Erhaltung der Lebensgrundlagen für zukünftige Generationen.
+
+## Dashboard Code: 
+- Nach Abschluss der Konzeptionsphase begann die interessante Phase der Dashboard-Entwicklung.
+- Für die Erstellung des Dashboards wurden Streamlit, Altair, das VegaDataset, pandas, numpy und pycountry genutzt.
+- Die Ordnerstruktur für das Projekt sieht wie folgt aus:
+
+
+    - `charts`: Enthält alle erstellten Charts, die im Dashboard zu finden sind. Der Unterordner `__pycache__` speichert Zwischenspeicherdateien.
+    - `media`: Beinhaltet alle Flaggen der Länder im SVG-Format.
+    - `styles`: Enthält das Styling für das Dashboard.
+    - `utils`: Teilt sich weiter auf:
+        - `data`: Enthält CSV-Dateien, die für die Erstellung der Diagramme notwendig sind.
+        - `__pycache__`: Speichert Zwischenspeicherdateien.
+- Innerhalb des `charts`-Ordners befinden sich alle erstellten Charts, die im Dashboard integriert sind.
+- Im `media`-Ordner sind die SVG-Dateien der Länderflaggen abgelegt.
+- Der `styles`-Ordner enthält das Styling für das Dashboard.
+- Der `utils`-Ordner gliedert sich in weitere Unterordner:
+    - `data`: Enthält alle CSV-Dateien, die für die Diagrammerstellung benötigt werden.
+    - `__pycache__`: Speichert Zwischenspeicherdateien.
+- Zusätzlich existieren die Dateien `helper.py`, `load_data.py`, `tweaker.py`, `nd_type_color.py` sowie die beiden Dataprep-Skripte.
+- Die Datei `analysis.ipynb` beinhaltet die Analyse des Projekts. Es gibt außerdem eine `.gitignore`-Datei, `requirements.txt` und `read.md`.
+- Zuletzt existiert die Datei `app.py`, die das eigentliche Dashboard darstellt.
+
+## Dashboard Aufbau
+- Das Chart "Katastrophenverlauf" wurde genutzt, um zu zeigen, dass die Anzahl von Naturkatastrophen in den letzten Jahren zugenommen hat.
+- Ebenso wurde der Linechart über den Temperaturverlauf verwendet, um darzustellen, dass die Durchschnittstemperatur auf der Erde seit Jahrzehnten steigt, insbesondere unter anthropologischem Einfluss.
+- Beide Charts wurden bewusst am oberen Teil des Dashboards platziert, um dem Betrachter diese Informationen direkt zu Beginn zugänglich zu machen, da daraufhin eine Verbindung der beiden Graphen erfolgt.
+- Der nächste Graph kombiniert die beiden Datensätze und zeigt die Anzahl der Naturkatastrophen in Abhängigkeit von der Durchschnittstemperatur. Der Scatterplot verdeutlicht, dass ein Großteil der Verteilung bei höheren Temperaturen liegt und unterstützt somit unsere Aussage.
+- Anschließend gewährt ein tieferer Einblick in die Verteilung von Naturkatastrophen bezüglich der Frequenz durch die Barcharts.
+- Die Weltkarte soll betonen, dass verschiedene Regionen der Welt unterschiedlich von dieser Entwicklung betroffen sind, insbesondere Länder des Globalen Südens.
+- Die Analyse der Temperaturzonen unterstreicht diesen Aspekt.
+- Die Interaktivität wurde durch verschiedene Filter umgesetzt, sodass Jahr, Katastrophentyp und Land filterbar sind und die Graphen "Katastrophenverlauf" und "Scatterplot" sich entsprechend ändern.
+- Die Abfolge der Graphen soll die Kernaussage verdeutlichen, dass durch ansteigende Temperaturen Naturkatastrophen zunehmen.
+
+
+

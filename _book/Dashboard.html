@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Template - 3&nbsp; DST Dokumentation: Dashboard</title>
+<title>Template - 3&nbsp; Entwicklung des Dashboards</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,7 +66,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<meta property="og:title" content="Template - 3&nbsp; DST Dokumentation: Dashboard">
+<meta property="og:title" content="Template - 3&nbsp; Entwicklung des Dashboards">
 <meta property="og:site-name" content="Template">
 </head>
 
@@ -79,7 +79,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Dashboard.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">DST Dokumentation: Dashboard</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Dashboard.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Entwicklung des Dashboards</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -123,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Dashboard.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">DST Dokumentation: Dashboard</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Entwicklung des Dashboards</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -144,14 +144,22 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#dashboard-konzeption" id="toc-dashboard-konzeption" class="nav-link active" data-scroll-target="#dashboard-konzeption"><span class="header-section-number">3.1</span> Dashboard Konzeption:</a></li>
+  <li><a href="#dashboard-code" id="toc-dashboard-code" class="nav-link" data-scroll-target="#dashboard-code"><span class="header-section-number">3.2</span> Dashboard Code:</a></li>
+  <li><a href="#dashboard-aufbau" id="toc-dashboard-aufbau" class="nav-link" data-scroll-target="#dashboard-aufbau"><span class="header-section-number">3.3</span> Dashboard Aufbau</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ORGNAME/REPONAME/edit/main/Dashboard.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/ORGNAME/REPONAME/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">DST Dokumentation: Dashboard</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Entwicklung des Dashboards</span></h1>
 </div>
 
 
@@ -166,8 +174,58 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="dashboard-konzeption" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="dashboard-konzeption"><span class="header-section-number">3.1</span> Dashboard Konzeption:</h2>
+<ul>
+<li>Bei der Konzeption des Dashboards orientierten wir uns an folgenden Anforderungen: Interaktivität, Nutzung von mindestens 5 verschiedenen Charttypen, sinnvolle Verwendung von Farben und Legenden sowie unterschiedliche visuelle Aufbereitung der Diagramme.</li>
+<li>Die zugrunde liegende Aussage betonte die Wichtigkeit der Bewältigung des Klimawandels und der Minderung seiner Auswirkungen für den Schutz unseres Planeten, die Sicherheit der Menschheit und die Erhaltung der Lebensgrundlagen für zukünftige Generationen.</li>
+</ul>
+</section>
+<section id="dashboard-code" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="dashboard-code"><span class="header-section-number">3.2</span> Dashboard Code:</h2>
+<ul>
+<li><p>Nach Abschluss der Konzeptionsphase begann die interessante Phase der Dashboard-Entwicklung.</p></li>
+<li><p>Für die Erstellung des Dashboards wurden Streamlit, Altair, das VegaDataset, pandas, numpy und pycountry genutzt.</p></li>
+<li><p>Die Ordnerstruktur für das Projekt sieht wie folgt aus:</p>
+<ul>
+<li><code>charts</code>: Enthält alle erstellten Charts, die im Dashboard zu finden sind. Der Unterordner <code>__pycache__</code> speichert Zwischenspeicherdateien.</li>
+<li><code>media</code>: Beinhaltet alle Flaggen der Länder im SVG-Format.</li>
+<li><code>styles</code>: Enthält das Styling für das Dashboard.</li>
+<li><code>utils</code>: Teilt sich weiter auf:
+<ul>
+<li><code>data</code>: Enthält CSV-Dateien, die für die Erstellung der Diagramme notwendig sind.</li>
+<li><code>__pycache__</code>: Speichert Zwischenspeicherdateien.</li>
+</ul></li>
+</ul></li>
+<li><p>Innerhalb des <code>charts</code>-Ordners befinden sich alle erstellten Charts, die im Dashboard integriert sind.</p></li>
+<li><p>Im <code>media</code>-Ordner sind die SVG-Dateien der Länderflaggen abgelegt.</p></li>
+<li><p>Der <code>styles</code>-Ordner enthält das Styling für das Dashboard.</p></li>
+<li><p>Der <code>utils</code>-Ordner gliedert sich in weitere Unterordner:</p>
+<ul>
+<li><code>data</code>: Enthält alle CSV-Dateien, die für die Diagrammerstellung benötigt werden.</li>
+<li><code>__pycache__</code>: Speichert Zwischenspeicherdateien.</li>
+</ul></li>
+<li><p>Zusätzlich existieren die Dateien <code>helper.py</code>, <code>load_data.py</code>, <code>tweaker.py</code>, <code>nd_type_color.py</code> sowie die beiden Dataprep-Skripte.</p></li>
+<li><p>Die Datei <code>analysis.ipynb</code> beinhaltet die Analyse des Projekts. Es gibt außerdem eine <code>.gitignore</code>-Datei, <code>requirements.txt</code> und <code>read.md</code>.</p></li>
+<li><p>Zuletzt existiert die Datei <code>app.py</code>, die das eigentliche Dashboard darstellt.</p></li>
+</ul>
+</section>
+<section id="dashboard-aufbau" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="dashboard-aufbau"><span class="header-section-number">3.3</span> Dashboard Aufbau</h2>
+<ul>
+<li>Das Chart “Katastrophenverlauf” wurde genutzt, um zu zeigen, dass die Anzahl von Naturkatastrophen in den letzten Jahren zugenommen hat.</li>
+<li>Ebenso wurde der Linechart über den Temperaturverlauf verwendet, um darzustellen, dass die Durchschnittstemperatur auf der Erde seit Jahrzehnten steigt, insbesondere unter anthropologischem Einfluss.</li>
+<li>Beide Charts wurden bewusst am oberen Teil des Dashboards platziert, um dem Betrachter diese Informationen direkt zu Beginn zugänglich zu machen, da daraufhin eine Verbindung der beiden Graphen erfolgt.</li>
+<li>Der nächste Graph kombiniert die beiden Datensätze und zeigt die Anzahl der Naturkatastrophen in Abhängigkeit von der Durchschnittstemperatur. Der Scatterplot verdeutlicht, dass ein Großteil der Verteilung bei höheren Temperaturen liegt und unterstützt somit unsere Aussage.</li>
+<li>Anschließend gewährt ein tieferer Einblick in die Verteilung von Naturkatastrophen bezüglich der Frequenz durch die Barcharts.</li>
+<li>Die Weltkarte soll betonen, dass verschiedene Regionen der Welt unterschiedlich von dieser Entwicklung betroffen sind, insbesondere Länder des Globalen Südens.</li>
+<li>Die Analyse der Temperaturzonen unterstreicht diesen Aspekt.</li>
+<li>Die Interaktivität wurde durch verschiedene Filter umgesetzt, sodass Jahr, Katastrophentyp und Land filterbar sind und die Graphen “Katastrophenverlauf” und “Scatterplot” sich entsprechend ändern.</li>
+<li>Die Abfolge der Graphen soll die Kernaussage verdeutlichen, dass durch ansteigende Temperaturen Naturkatastrophen zunehmen.</li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -534,4 +592,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ORGNAME/REPONAME/edit/main/Dashboard.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/ORGNAME/REPONAME/issues/new" class="toc-action">Report an issue</a></p></div></div></div></div></footer></body></html>
+</body></html>

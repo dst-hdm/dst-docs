@@ -4,9 +4,10 @@ project:
 execute:
   freeze: auto
 
+
 book:
   page-navigation: true
-  title: "Template"
+  title: "Dokumentation Data Storytelling"
   site-url: "https://dst-hdm.github.io/dst-docs/" # replace ORGNAME and REPONAME
   repo-url: https://github.com/dst-hdm/dst-docs # replace ORGNAME and REPONAME
   repo-actions: [edit, issue]
@@ -16,12 +17,13 @@ book:
   search:
     type: overlay
   chapters:
-    - Ideenfindung.qmd
-    - DataPrep.qmd
-    - Dashboard.qmd
-    - Storyline.qmd
-    - Presentation.qmd
     - index.md
+    - ideenfindung.qmd
+    - dataPrep.qmd
+    - dashboard.qmd
+    - storyline.qmd
+    - presentation.qmd
+    - probleme.qmd
 
 format:
   html:

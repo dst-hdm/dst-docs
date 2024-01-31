@@ -1,0 +1,19 @@
+# Projektherausforderungen im Detail:
+
+1. **Beschaffung des Datensatzes:**
+   Die Datensatzbeschaffung gestaltete sich als anspruchsvoll, da die Definition von Naturkatastrophen variabel ist. Zudem waren die verfügbaren Datensätze häufig länderspezifisch und wiesen Unstimmigkeiten auf.
+
+2. **Temperaturdaten in Celsius und Fahrenheit:**
+   Ein herausforderndes Problem stellte die Konsistenz der Temperaturdaten dar, die sowohl in Celsius als auch in Fahrenheit vorlagen. Die Vereinheitlichung dieser Einheiten erwies sich als komplex und erforderte präzise Konvertierungsstrategien.
+
+3. **Auswahl der Visualisierungsgraphen:**
+   Die Auswahl geeigneter Grafiken gestaltete sich schwierig, da wir bestrebt waren, eine ausgewogene Vielfalt zu integrieren. Die Herausforderung lag darin, Grafiken zu identifizieren, die die Daten optimal repräsentierten und gleichzeitig eine breite Palette an visuellen Darstellungen boten.
+
+4. **Mapping von ISO-Codes zu Ländern:**
+   Die Zuordnung von ISO-Codes zu Ländern stellte eine weitere Herausforderung dar, da inkonsistente Daten die genaue Zuordnung behinderten. Die Bewältigung dieser Dissonanzen erforderte präzise Validierungs- und Abgleichprozesse.
+
+5. **Ladezeiten des Dashboards:**
+   Trotz Bemühungen, die Ladezeiten zu optimieren, blieb dieses Problem bestehen. Die Größe des Datensatzes erwies sich als limitierender Faktor, da eine vollständige Aktualisierung bei jedem Zugriff erforderlich war, was die Performance beeinträchtigte. Leider waren signifikante Verbesserungen hier nur begrenzt umsetzbar.
+6. **Tiefe des Thema:**
+    Die genaue Ermittlung der Ursachen für den Anstieg der Häufigkeit von Naturkatastrophen erwies sich als herausfordernd. Dies resultiert aus der außerordentlichen Komplexität des Themas, welches ein tiefgreifendes Verständnis der Geophysik und anderer naturwissenschaftlicher Disziplinen voraussetzt. Die inhärente Komplexität dieses Sachverhalts machte eine präzise Analyse und Identifikation der genauen Ursachen äußerst schwierig, wobei ein umfassendes Fachwissen unabdingbar wäre.Weswegen wir am Ende unserer Präsentation nochmals darauf verweisen. 
+    

@@ -229,7 +229,7 @@ nd_flood_chart.configure(background="rgba(0, 0, 0, 0)")
 
 **Ziel:**
 
-- der Linechart veranschaulicht sehr gut, wie Häufigkeit in den letzten 3 Jahrzehneten gestiegen ist, deswegen haben wir uns hier auch für ein Linechart entschieden 
+- der Linechart veranschaulicht sehr gut, wie die Häufigkeit in den letzten 3 Jahrzehneten gestiegen ist, deswegen haben wir uns hier auch für ein Linechart entschieden 
 - der Rotepunkt ist leicht zu erkennen und zeigt dem Zuschauer direkt auf welche Sequenz wir uns gerade beziehen 
 ```{python}
 nd_type_filter_storm = alt.FieldEqualPredicate(
@@ -337,7 +337,7 @@ nd_extr_temp_chart.configure(background="rgba(0, 0, 0, 0)")
 
 **Ziel:**
 
-- auch hier ist wieder ein Linechart zu erkennen, damit klar der Anstieg Häufigkeit zu erkennen ist 
+- auch hier ist wieder ein Linechart zu erkennen, damit klar der Anstieg der Häufigkeit zu erkennen ist 
 
 ```{python}
 global_disaster_freq = df_temp_nd_combined.groupby(['AverageTemperature', 'Disaster Type'])[
@@ -385,7 +385,7 @@ nd_temp_scatter.configure(background="rgba(0, 0, 0, 0)")
 
 - Präsentation einer Schlüsselfolie: Zusammenhang zwischen Temperatur und Naturkatastrophen.
 - Ein Scatterplot wird verwendet, um den Einfluss steigender Temperaturen auf die Häufigkeit von Naturkatastrophen klar zu veranschaulichen.
-- wir haben uns auch direkt für diese Folie entschieden, da wir uns damit direkt auf unsere Leitfrage wieder beziehen
+- wir haben uns auch  für diese Folie entschieden, da wir uns damit direkt auf unsere Leitfrage wieder beziehen können und somit wieder auf unsere Storyline zurück kommen 
 
 ```{=html}
 <div class="infoCards">

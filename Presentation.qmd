@@ -15,6 +15,8 @@ Nachdem der Inhaltsangabe, erfolgt eine kurze Erläuterung zu unseren Quellen. H
 ### Durschnittstemperatur Verlauf
 
 ```{python}
+#| echo: false
+
 import pandas as pd
 import altair as alt
 from vega_datasets import data
@@ -89,13 +91,13 @@ glob_temp_chart = alt.Chart(global_avg_temp).mark_line(stroke=chart_line_color).
         values=list(range(global_avg_temp['Year'].min(
         ), global_avg_temp['Year'].max() + 1, 5)),
         titleAnchor='start',
-        labelColor='white',
+        labelColor='black',
     )),
     y=alt.Y('AverageTemperature:Q', axis=alt.Axis(
         title='Temperatur in °C',
         titleAnchor='start',
         labelColor='white',
-        titleColor='white',
+        titleColor='black',
     ), scale=alt.Scale(
         domain=[18, 21])),
     tooltip=['Year', 'AverageTemperature']
@@ -140,6 +142,7 @@ glob_temp_chart.configure(background="rgba(0, 0, 0, 0)")
 ### Globale Naturkatastrophen 
 
 ```{python}
+#| echo: false
 
 df_nd_filtered = df_nd_grouped[(df_nd_grouped['Frequency'] > 0) & ((
     df_nd_grouped['Disaster Type'] == 'Flood') | (df_nd_grouped['Disaster Type'] == 'Storm') | (df_nd_grouped['Disaster Type'] == 'Extreme temperatur'))]
@@ -152,13 +155,13 @@ nd_line_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_colo
         labelAngle=0,
         values=list(range(global_avg_temp['Year'].min(
         ), global_avg_temp['Year'].max() + 1, 5)),
-        labelColor='white',
+        labelColor='black',
     )),
     y=alt.Y('Frequency:Q').axis(
         title='Häufigkeit',
         titleAnchor='start',
-        labelColor='white',
-        titleColor='white'
+        labelColor='black',
+        titleColor='black'
     ),
 ).properties(
     width=950,
@@ -178,6 +181,8 @@ nd_line_chart.configure(background="rgba(0, 0, 0, 0)")
 
 - durch den Linechart bietet sich ein gute Möglichkeit den Trend der zunehmenden Häufigkeit darzustellen. 
 ```{python}
+#| echo: false
+
 nd_type_filter_flood = alt.FieldEqualPredicate(
     field='Disaster Type', equal='Flood')
 
@@ -188,15 +193,15 @@ nd_flood_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_col
     x=alt.X('Start Year:O', axis=alt.Axis(
         title='',
         labelAngle=0,
-        labelColor="white",
+        labelColor="black",
         values=list(range(global_avg_temp['Year'].min(
         ), global_avg_temp['Year'].max() + 1, 5)),
     )),
     y=alt.Y('Frequency:Q').axis(
         title='Häufigkeit',
         titleAnchor='start',
-        labelColor="white",
-        titleColor="white"
+        labelColor="black",
+        titleColor="black"
     ),
     color=alt.Color('Disaster Type:N',
                     legend=None),
@@ -224,6 +229,8 @@ nd_flood_chart_text_point_2006 = alt.Chart(global_disaster_freq[(global_disaster
 nd_flood_chart.configure(background="rgba(0, 0, 0, 0)")
 ```
 ```{python}
+#| echo: false
+
 (nd_flood_chart + nd_flood_chart_text_point_2006).configure(background="rgba(0, 0, 0, 0)")
 ```
 
@@ -232,6 +239,8 @@ nd_flood_chart.configure(background="rgba(0, 0, 0, 0)")
 - der Linechart veranschaulicht sehr gut, wie die Häufigkeit in den letzten 3 Jahrzehneten gestiegen ist, deswegen haben wir uns hier auch für ein Linechart entschieden 
 - der Rotepunkt ist leicht zu erkennen und zeigt dem Zuschauer direkt auf welche Sequenz wir uns gerade beziehen 
 ```{python}
+#| echo: false
+
 nd_type_filter_storm = alt.FieldEqualPredicate(
     field='Disaster Type', equal='Storm')
 
@@ -241,16 +250,16 @@ global_disaster_freq = df_nd_grouped.groupby(['Start Year', 'Disaster Type'])[
 nd_storm_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_color).encode(
     x=alt.X('Start Year:O', axis=alt.Axis(
         title='',
-        labelColor="white",
+        labelColor="black",
         labelAngle=0,
         values=list(range(global_avg_temp['Year'].min(
         ), global_avg_temp['Year'].max() + 1, 5)),
     )),
     y=alt.Y('Frequency:Q').axis(
         title='Häufigkeit',
-        labelColor="white",
+        labelColor="black",
         titleAnchor='start',
-        titleColor="white"
+        titleColor="black"
     ),
     color=alt.Color('Disaster Type:N',
                     legend=None),
@@ -285,6 +294,8 @@ nd_storm_chart.configure(background="rgba(0, 0, 0, 0)")
 
 - Der rote Punkt ist gut erkennbar und zeigt dem Zuschauer sofort, auf welche Sequenz wir uns aktuell beziehen.
 ```{python}
+#| echo: false
+
 nd_type_filter_extr_temp = alt.FieldEqualPredicate(
     field='Disaster Type', equal='Extreme temperature')
 
@@ -294,16 +305,16 @@ global_disaster_freq = df_nd_grouped.groupby(['Start Year', 'Disaster Type'])[
 nd_extr_temp_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_color).encode(
     x=alt.X('Start Year:O', axis=alt.Axis(
         title='',
-        labelColor="white",
+        labelColor="black",
         labelAngle=0,
         values=list(range(global_avg_temp['Year'].min(
         ), global_avg_temp['Year'].max() + 1, 5)),
     )),
     y=alt.Y('Frequency:Q').axis(
         title='Häufigkeit',
-        labelColor="white",
+        labelColor="black",
         titleAnchor='start',
-        titleColor="white"
+        titleColor="black"
     ),
     color=alt.Color('Disaster Type:N',
                     legend=None),
@@ -331,6 +342,8 @@ nd_extr_temp_chart_text_point_2012 = alt.Chart(global_disaster_freq[(global_disa
 nd_extr_temp_chart.configure(background="rgba(0, 0, 0, 0)")
 ```
 ```{python}
+#| echo: false
+
 (nd_extr_temp_chart +
  nd_extr_temp_chart_text_point_2012).configure(background="rgba(0, 0, 0, 0)")
 ```
@@ -340,6 +353,8 @@ nd_extr_temp_chart.configure(background="rgba(0, 0, 0, 0)")
 - auch hier ist wieder ein Linechart zu erkennen, damit klar der Anstieg der Häufigkeit zu erkennen ist 
 
 ```{python}
+#| echo: false
+
 global_disaster_freq = df_temp_nd_combined.groupby(['AverageTemperature', 'Disaster Type'])[
     'Frequency'].sum().reset_index()
 
@@ -350,14 +365,14 @@ nd_temp_scatter = alt.Chart(global_disaster_freq_filtered).mark_circle().encode(
     x=alt.X('AverageTemperature:O', title='Durchschnittstemperatur in °C ',
             axis=alt.Axis(format=".3f",
                           titleAnchor='start',
-                          titleColor="white",
-                          labelColor="white"
+                          titleColor="black",
+                          labelColor="black"
                           )),
     y=alt.Y('Frequency:Q', axis=alt.Axis(
         title='Häufigkeit',
         titleAnchor='start',
-        titleColor="white",
-        labelColor="white"
+        titleColor="black",
+        labelColor="black"
     )),
     color=alt.Color('Disaster Type',
                     title='Katastrophentyp',

@@ -15,6 +15,7 @@ Wir haben unsere beiden Datensätze unterschiedlich aufbereitet. Im Folgenden wi
 - Die verwendeten Bibliotheken waren Pandas und NumPy. Zusätzlich wurde eine JSON-Datei für die Ländercodes importiert.
 
 ```{python}
+#| echo: false
 import pandas as pd
 import altair as alt
 from vega_datasets import data
@@ -29,10 +30,10 @@ df_temp_agg = pd.read_csv('data/GlobalLandTemperatur_aggregated.csv')
 df_temp_nd_combined = pd.read_csv('data/df_temp_nd_combined.csv')
 countries = alt.topo_feature(data.world_110m.url, 'countries')
 
-chart_title_color = "#d6d6d6"
+chart_title_color = "#606061"
 chart_line_color = "#3A86FF"
 chart_marker_color = "#e00707"
-
+chart_width = 450
 nd_type_colors = {
     'Drought': '#FFBC42',
     'Earthquake': '#b55a1d',
@@ -82,6 +83,8 @@ Anschließend wurden die Ländernamen an die Ländernamen des Datensatzes zu Nat
 Zum Abschluss wurde eine CSV-Datei erstellt.
 Die verwendeten Bibliotheken waren Pandas und pycountry.
 ```{python}
+#| echo: false
+
 df_temp.head()
 
 ```
@@ -90,7 +93,10 @@ Um ein umfassenderes Verständnis für unsere Daten zu entwickeln und die Aussag
 
 Temperaturverlauf & Katastrophen (Sturm, Hitze und Fluten ) 1920 bis 2013
 ```{python}
+# | echo: false
+
 # | title: Iowa Electricity
+
 global_avg_temp = df_temp_agg.groupby(
     'Year')['AverageTemperature'].mean().reset_index()
 
@@ -119,7 +125,7 @@ glob_temp_chart = alt.Chart(global_avg_temp).mark_line(stroke=chart_line_color).
         domain=[18, 21])),
     tooltip=['Year', 'AverageTemperature']
 ).properties(
-    width=950,
+    width=chart_width,
     title={
         "text": "Globaler Temperaturverlauf (1920 – 2013)",
         "fontSize": 18,
@@ -155,6 +161,8 @@ glob_temp_chart.configure(background="rgba(0, 0, 0, 0)")
 ```
 
 ```{python}
+#| echo: false
+
 df_nd_filtered = df_nd_grouped[(df_nd_grouped['Frequency'] > 0) & ((
     df_nd_grouped['Disaster Type'] == 'Flood') | (df_nd_grouped['Disaster Type'] == 'Storm') | (df_nd_grouped['Disaster Type'] == 'Extreme temperatur'))]
 global_disaster_freq = df_nd_filtered.groupby(
@@ -175,7 +183,7 @@ nd_line_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_colo
         titleColor='black'
     ),
 ).properties(
-    width=950,
+    width=chart_width,
     height=290,
     title={
         "text": "Weltweite Häufigkeit pro Jahr: Stürmen, Extremtemperaturen und Überschwemmungen (1920 – 2013)",

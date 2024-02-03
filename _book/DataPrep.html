@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -241,63 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Die verwendeten Bibliotheken waren Pandas und NumPy. Zusätzlich wurde eine JSON-Datei für die Ländercodes importiert.</li>
 </ul>
 <div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> vega_datasets <span class="im">import</span> data</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>alt.data_transformers.disable_max_rows()</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df_nd <span class="op">=</span> pd.read_csv(<span class="st">'./data/InternationalDisaster_cleaned.csv'</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>df_nd_full <span class="op">=</span> pd.read_csv(<span class="st">'data/InternationalDisaster.csv'</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>df_nd_grouped <span class="op">=</span> pd.read_csv(<span class="st">'data/InternationalDisaster_grouped.csv'</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>df_temp <span class="op">=</span> pd.read_csv(<span class="st">'data/GlobalLandTemperatur_cleaned.csv'</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>df_temp_agg <span class="op">=</span> pd.read_csv(<span class="st">'data/GlobalLandTemperatur_aggregated.csv'</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>df_temp_nd_combined <span class="op">=</span> pd.read_csv(<span class="st">'data/df_temp_nd_combined.csv'</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> alt.topo_feature(data.world_110m.url, <span class="st">'countries'</span>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>chart_title_color <span class="op">=</span> <span class="st">"#d6d6d6"</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>chart_line_color <span class="op">=</span> <span class="st">"#3A86FF"</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>chart_marker_color <span class="op">=</span> <span class="st">"#e00707"</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>nd_type_colors <span class="op">=</span> {</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Drought'</span>: <span class="st">'#FFBC42'</span>,</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Earthquake'</span>: <span class="st">'#b55a1d'</span>,</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Epidemic'</span>: <span class="st">'#06D6A0'</span>,</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Extreme temperature'</span>: <span class="st">'#EF476F'</span>,</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Flood'</span>: <span class="st">'#3A86FF'</span>,</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Fog'</span>: <span class="st">'#118AB2'</span>,</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Impact'</span>: <span class="st">'#16225c'</span>,</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Infestation'</span>: <span class="st">'#2f9e29'</span>,</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Mass movement (dry)'</span>: <span class="st">'#78259c'</span>,</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Mass movement (wet)'</span>: <span class="st">'#512599'</span>,</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Storm'</span>: <span class="st">'#287fa1'</span>,</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Volcanic activity'</span>: <span class="st">'#ab4c29'</span>,</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Wildfire'</span>: <span class="st">'#b52222'</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>nd_type_colors <span class="op">=</span> {</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Drought'</span>: <span class="st">'#FFBC42'</span>,</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Earthquake'</span>: <span class="st">'#b55a1d'</span>,</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Epidemic'</span>: <span class="st">'#06D6A0'</span>,</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Extreme temperature'</span>: <span class="st">'#EF476F'</span>,</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Flood'</span>: <span class="st">'#3A86FF'</span>,</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Fog'</span>: <span class="st">'#118AB2'</span>,</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Impact'</span>: <span class="st">'#16225c'</span>,</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Infestation'</span>: <span class="st">'#2f9e29'</span>,</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Mass movement (dry)'</span>: <span class="st">'#78259c'</span>,</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Mass movement (wet)'</span>: <span class="st">'#512599'</span>,</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Storm'</span>: <span class="st">'#287fa1'</span>,</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Volcanic activity'</span>: <span class="st">'#ab4c29'</span>,</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Wildfire'</span>: <span class="st">'#b52222'</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>nd_type_colors_red <span class="op">=</span> {</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Extreme temperature'</span>: nd_type_colors[<span class="st">'Extreme temperature'</span>],</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Storm'</span>: nd_type_colors[<span class="st">'Storm'</span>],</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Flood'</span>: nd_type_colors[<span class="st">'Flood'</span>]</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>df_nd.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <div>
 
 
@@ -461,8 +371,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="3.2" class="anchored" data-anchor-id="data-preparation-für-temperatur"><span class="header-section-number">3.2</span> Data Preparation für Temperatur:</h2>
 <p>Zu Beginn der Datenvorbereitung für den Datensatz wurde jedem Land eine eindeutige UID-Zelle zugewiesen und diese wurde befüllt. Anschließend wurde die Datenstruktur durch das Betrachten von Head und Tail überprüft, woraufhin die verbleibenden NaN-Werte entfernt wurden. Danach wurden die Datentypen betrachtet und angepasst. Hierbei erfolgte eine Änderung des Datetime-Formats und der Datentyp der Spalte “Country” wurde zu “Category” geändert. Anschließend wurde der DataFrame nach der Jahreszahl gefiltert und alle UID-Werte, die als “Unknown” gekennzeichnet waren, wurden entfernt. Nach dieser Aktion erfolgte die Verknüpfung mit den ISO-Ländercodes, wobei entsprechender Python-Code verwendet wurde. Anschließend wurden die Ländernamen an die Ländernamen des Datensatzes zu Naturkatastrophen angepasst. Zum Abschluss wurde eine CSV-Datei erstellt. Die verwendeten Bibliotheken waren Pandas und pycountry.</p>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df_temp.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <div>
 
 
@@ -535,88 +444,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="3.3" class="anchored" data-anchor-id="deep-dive-into-data"><span class="header-section-number">3.3</span> Deep dive into Data:</h2>
 <p>Um ein umfassenderes Verständnis für unsere Daten zu entwickeln und die Aussagekraft unserer Ergebnisse zu verstärken, haben wir mithilfe von Altair zunächst grundlegende Diagramme erstellt. Dies diente dazu, eine tiefere Einsicht in unsere Daten zu gewinnen. Wir begannen mit der Entwicklung eines Diagramms, das den Temperaturverlauf von 1920 bis 2013 zeigt. Anschließend erstellten wir ein Diagramm mit der Anzahl der Naturkatastrophen von 1920 bis 2013. Zusätzlich wurden weitere Balkendiagramme entworfen, um das Verhältnis verschiedener Naturkatastrophen zu visualisieren. Obwohl dieser Prozess mitunter anspruchsvoll war, erwies er sich als äußerst hilfreich für die Fortschritte in unserem Projekt. Die erstellten Diagramme ermöglichten uns tiefe Einblicke in unsere Daten zu gewinnen.</p>
 <p>Temperaturverlauf &amp; Katastrophen (Sturm, Hitze und Fluten ) 1920 bis 2013</p>
-<div class="cell" title="Iowa Electricity" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>global_avg_temp <span class="op">=</span> df_temp_agg.groupby(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Year'</span>)[<span class="st">'AverageTemperature'</span>].mean().reset_index()</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>global_avg_temp[<span class="st">'Year'</span>] <span class="op">=</span> pd.to_datetime(</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    global_avg_temp[<span class="st">'Year'</span>], <span class="bu">format</span><span class="op">=</span><span class="st">'%Y'</span>)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>global_avg_temp[<span class="st">'Year'</span>] <span class="op">=</span> global_avg_temp[<span class="st">'Year'</span>].dt.year</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>global_avg_temp[<span class="st">'AverageTemperature'</span>] <span class="op">=</span> global_avg_temp[<span class="st">'AverageTemperature'</span>].<span class="bu">round</span>(</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>glob_temp_chart <span class="op">=</span> alt.Chart(global_avg_temp).mark_line(stroke<span class="op">=</span>chart_line_color).encode(</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'Year:O'</span>, axis<span class="op">=</span>alt.Axis(</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">''</span>,</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        labelAngle<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span><span class="bu">list</span>(<span class="bu">range</span>(global_avg_temp[<span class="st">'Year'</span>].<span class="bu">min</span>(</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        ), global_avg_temp[<span class="st">'Year'</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span>, <span class="dv">5</span>)),</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        titleAnchor<span class="op">=</span><span class="st">'start'</span>,</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        labelColor<span class="op">=</span><span class="st">'black'</span>,</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    )),</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>alt.Y(<span class="st">'AverageTemperature:Q'</span>, axis<span class="op">=</span>alt.Axis(</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">'Temperatur in °C'</span>,</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        titleAnchor<span class="op">=</span><span class="st">'start'</span>,</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        labelColor<span class="op">=</span><span class="st">'black'</span>,</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        titleColor<span class="op">=</span><span class="st">'black'</span>,</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    ), scale<span class="op">=</span>alt.Scale(</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        domain<span class="op">=</span>[<span class="dv">18</span>, <span class="dv">21</span>])),</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span>[<span class="st">'Year'</span>, <span class="st">'AverageTemperature'</span>]</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>).properties(</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="dv">950</span>,</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span>{</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">"text"</span>: <span class="st">"Globaler Temperaturverlauf (1920 – 2013)"</span>,</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fontSize"</span>: <span class="dv">18</span>,</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fontWeight"</span>: <span class="dv">300</span>,</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        <span class="st">"anchor"</span>: <span class="st">'start'</span>,</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        <span class="st">"color"</span>: chart_title_color,</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>glob_temp_regression <span class="op">=</span> glob_temp_chart.transform_regression(</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Year'</span>, <span class="st">'AverageTemperature'</span>, method<span class="op">=</span><span class="st">'linear'</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>).mark_line(color<span class="op">=</span>chart_marker_color)</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>text_at_end <span class="op">=</span> alt.Chart(pd.DataFrame({<span class="st">'end_position'</span>: [<span class="fl">19.8</span>]})).mark_text(</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    align<span class="op">=</span><span class="st">'left'</span>,</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    baseline<span class="op">=</span><span class="st">'middle'</span>,</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    dx<span class="op">=</span><span class="dv">360</span>,</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    dy<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span>chart_marker_color,</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    text<span class="op">=</span><span class="st">'Anstieg: 0.8 °C'</span>,</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    fontWeight<span class="op">=</span><span class="dv">800</span>,</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    fontSize<span class="op">=</span><span class="dv">14</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>).encode(</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'end_position:Q'</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>glob_temp_chart.configure(background<span class="op">=</span><span class="st">"rgba(0, 0, 0, 0)"</span>)</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>(glob_temp_chart <span class="op">+</span> glob_temp_regression <span class="op">+</span></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a> text_at_end).configure(background<span class="op">=</span><span class="st">"rgba(0, 0, 0, 0)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="15">
 
 <style>
-  #altair-viz-cc64ada9d2234431801556db6e7b8952.vega-embed {
+  #altair-viz-ec7547b7c1554e129655b44ed0d83c69.vega-embed {
     width: 100%;
     display: flex;
   }
 
-  #altair-viz-cc64ada9d2234431801556db6e7b8952.vega-embed details,
-  #altair-viz-cc64ada9d2234431801556db6e7b8952.vega-embed details summary {
+  #altair-viz-ec7547b7c1554e129655b44ed0d83c69.vega-embed details,
+  #altair-viz-ec7547b7c1554e129655b44ed0d83c69.vega-embed details summary {
     position: relative;
   }
 </style>
-<div id="altair-viz-cc64ada9d2234431801556db6e7b8952"></div>
+<div id="altair-viz-ec7547b7c1554e129655b44ed0d83c69"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-cc64ada9d2234431801556db6e7b8952") {
-      outputDiv = document.getElementById("altair-viz-cc64ada9d2234431801556db6e7b8952");
+    if (outputDiv.id !== "altair-viz-ec7547b7c1554e129655b44ed0d83c69") {
+      outputDiv = document.getElementById("altair-viz-ec7547b7c1554e129655b44ed0d83c69");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
@@ -662,62 +510,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         .catch(showError)
         .then(() => displayChart(vegaEmbed));
     }
-  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}, "background": "rgba(0, 0, 0, 0)"}, "layer": [{"mark": {"type": "line", "stroke": "#3A86FF"}, "encoding": {"tooltip": [{"field": "Year", "type": "quantitative"}, {"field": "AverageTemperature", "type": "quantitative"}], "x": {"axis": {"labelAngle": 0, "labelColor": "black", "title": "", "titleAnchor": "start", "values": [1920, 1925, 1930, 1935, 1940, 1945, 1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010]}, "field": "Year", "type": "ordinal"}, "y": {"axis": {"labelColor": "black", "title": "Temperatur in \u00b0C", "titleAnchor": "start", "titleColor": "black"}, "field": "AverageTemperature", "scale": {"domain": [18, 21]}, "type": "quantitative"}}, "title": {"text": "Globaler Temperaturverlauf (1920 \u2013 2013)", "fontSize": 18, "fontWeight": 300, "anchor": "start", "color": "#d6d6d6"}}, {"mark": {"type": "line", "color": "#e00707"}, "encoding": {"tooltip": [{"field": "Year", "type": "quantitative"}, {"field": "AverageTemperature", "type": "quantitative"}], "x": {"axis": {"labelAngle": 0, "labelColor": "black", "title": "", "titleAnchor": "start", "values": [1920, 1925, 1930, 1935, 1940, 1945, 1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010]}, "field": "Year", "type": "ordinal"}, "y": {"axis": {"labelColor": "black", "title": "Temperatur in \u00b0C", "titleAnchor": "start", "titleColor": "black"}, "field": "AverageTemperature", "scale": {"domain": [18, 21]}, "type": "quantitative"}}, "title": {"text": "Globaler Temperaturverlauf (1920 \u2013 2013)", "fontSize": 18, "fontWeight": 300, "anchor": "start", "color": "#d6d6d6"}, "transform": [{"on": "Year", "regression": "AverageTemperature", "method": "linear"}]}, {"data": {"name": "data-a8e8341873f079ab6a0e8fafe62d3d87"}, "mark": {"type": "text", "align": "left", "baseline": "middle", "color": "#e00707", "dx": 360, "dy": 0, "fontSize": 14, "fontWeight": 800, "text": "Anstieg: 0.8 \u00b0C"}, "encoding": {"y": {"field": "end_position", "type": "quantitative"}}}], "data": {"name": "data-577afa6078a9bcb211c9dfe21d62cbd8"}, "width": 950, "$schema": "https://vega.github.io/schema/vega-lite/v5.15.1.json", "datasets": {"data-577afa6078a9bcb211c9dfe21d62cbd8": [{"Year": 1920, "AverageTemperature": 19.19}, {"Year": 1921, "AverageTemperature": 19.27}, {"Year": 1922, "AverageTemperature": 19.21}, {"Year": 1923, "AverageTemperature": 19.24}, {"Year": 1924, "AverageTemperature": 19.3}, {"Year": 1925, "AverageTemperature": 19.28}, {"Year": 1926, "AverageTemperature": 19.55}, {"Year": 1927, "AverageTemperature": 19.44}, {"Year": 1928, "AverageTemperature": 19.41}, {"Year": 1929, "AverageTemperature": 19.16}, {"Year": 1930, "AverageTemperature": 19.52}, {"Year": 1931, "AverageTemperature": 19.43}, {"Year": 1932, "AverageTemperature": 19.43}, {"Year": 1933, "AverageTemperature": 19.23}, {"Year": 1934, "AverageTemperature": 19.48}, {"Year": 1935, "AverageTemperature": 19.39}, {"Year": 1936, "AverageTemperature": 19.49}, {"Year": 1937, "AverageTemperature": 19.61}, {"Year": 1938, "AverageTemperature": 19.54}, {"Year": 1939, "AverageTemperature": 19.49}, {"Year": 1940, "AverageTemperature": 19.38}, {"Year": 1941, "AverageTemperature": 19.6}, {"Year": 1942, "AverageTemperature": 19.45}, {"Year": 1943, "AverageTemperature": 19.46}, {"Year": 1944, "AverageTemperature": 19.53}, {"Year": 1945, "AverageTemperature": 19.47}, {"Year": 1946, "AverageTemperature": 19.61}, {"Year": 1947, "AverageTemperature": 19.74}, {"Year": 1948, "AverageTemperature": 19.57}, {"Year": 1949, "AverageTemperature": 19.52}, {"Year": 1950, "AverageTemperature": 19.38}, {"Year": 1951, "AverageTemperature": 19.58}, {"Year": 1952, "AverageTemperature": 19.61}, {"Year": 1953, "AverageTemperature": 19.63}, {"Year": 1954, "AverageTemperature": 19.36}, {"Year": 1955, "AverageTemperature": 19.46}, {"Year": 1956, "AverageTemperature": 19.08}, {"Year": 1957, "AverageTemperature": 19.56}, {"Year": 1958, "AverageTemperature": 19.76}, {"Year": 1959, "AverageTemperature": 19.6}, {"Year": 1960, "AverageTemperature": 19.68}, {"Year": 1961, "AverageTemperature": 19.71}, {"Year": 1962, "AverageTemperature": 19.51}, {"Year": 1963, "AverageTemperature": 19.53}, {"Year": 1964, "AverageTemperature": 19.38}, {"Year": 1965, "AverageTemperature": 19.33}, {"Year": 1966, "AverageTemperature": 19.69}, {"Year": 1967, "AverageTemperature": 19.42}, {"Year": 1968, "AverageTemperature": 19.4}, {"Year": 1969, "AverageTemperature": 19.58}, {"Year": 1970, "AverageTemperature": 19.61}, {"Year": 1971, "AverageTemperature": 19.4}, {"Year": 1972, "AverageTemperature": 19.49}, {"Year": 1973, "AverageTemperature": 19.69}, {"Year": 1974, "AverageTemperature": 19.43}, {"Year": 1975, "AverageTemperature": 19.54}, {"Year": 1976, "AverageTemperature": 19.25}, {"Year": 1977, "AverageTemperature": 19.72}, {"Year": 1978, "AverageTemperature": 19.52}, {"Year": 1979, "AverageTemperature": 19.74}, {"Year": 1980, "AverageTemperature": 19.68}, {"Year": 1981, "AverageTemperature": 19.72}, {"Year": 1982, "AverageTemperature": 19.65}, {"Year": 1983, "AverageTemperature": 19.91}, {"Year": 1984, "AverageTemperature": 19.57}, {"Year": 1985, "AverageTemperature": 19.51}, {"Year": 1986, "AverageTemperature": 19.63}, {"Year": 1987, "AverageTemperature": 19.88}, {"Year": 1988, "AverageTemperature": 19.92}, {"Year": 1989, "AverageTemperature": 19.83}, {"Year": 1990, "AverageTemperature": 20.11}, {"Year": 1991, "AverageTemperature": 19.82}, {"Year": 1992, "AverageTemperature": 19.77}, {"Year": 1993, "AverageTemperature": 19.73}, {"Year": 1994, "AverageTemperature": 20.04}, {"Year": 1995, "AverageTemperature": 20.08}, {"Year": 1996, "AverageTemperature": 19.76}, {"Year": 1997, "AverageTemperature": 20.05}, {"Year": 1998, "AverageTemperature": 20.4}, {"Year": 1999, "AverageTemperature": 20.19}, {"Year": 2000, "AverageTemperature": 20.16}, {"Year": 2001, "AverageTemperature": 20.22}, {"Year": 2002, "AverageTemperature": 20.36}, {"Year": 2003, "AverageTemperature": 20.3}, {"Year": 2004, "AverageTemperature": 20.22}, {"Year": 2005, "AverageTemperature": 20.3}, {"Year": 2006, "AverageTemperature": 20.31}, {"Year": 2007, "AverageTemperature": 20.4}, {"Year": 2008, "AverageTemperature": 20.22}, {"Year": 2009, "AverageTemperature": 20.35}, {"Year": 2010, "AverageTemperature": 20.46}, {"Year": 2011, "AverageTemperature": 20.23}, {"Year": 2012, "AverageTemperature": 20.24}, {"Year": 2013, "AverageTemperature": 20.69}], "data-a8e8341873f079ab6a0e8fafe62d3d87": [{"end_position": 19.8}]}}, {"mode": "vega-lite"});
+  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}, "background": "rgba(0, 0, 0, 0)"}, "layer": [{"mark": {"type": "line", "stroke": "#3A86FF"}, "encoding": {"tooltip": [{"field": "Year", "type": "quantitative"}, {"field": "AverageTemperature", "type": "quantitative"}], "x": {"axis": {"labelAngle": 0, "labelColor": "black", "title": "", "titleAnchor": "start", "values": [1920, 1925, 1930, 1935, 1940, 1945, 1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010]}, "field": "Year", "type": "ordinal"}, "y": {"axis": {"labelColor": "black", "title": "Temperatur in \u00b0C", "titleAnchor": "start", "titleColor": "black"}, "field": "AverageTemperature", "scale": {"domain": [18, 21]}, "type": "quantitative"}}, "title": {"text": "Globaler Temperaturverlauf (1920 \u2013 2013)", "fontSize": 18, "fontWeight": 300, "anchor": "start", "color": "#606061"}}, {"mark": {"type": "line", "color": "#e00707"}, "encoding": {"tooltip": [{"field": "Year", "type": "quantitative"}, {"field": "AverageTemperature", "type": "quantitative"}], "x": {"axis": {"labelAngle": 0, "labelColor": "black", "title": "", "titleAnchor": "start", "values": [1920, 1925, 1930, 1935, 1940, 1945, 1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010]}, "field": "Year", "type": "ordinal"}, "y": {"axis": {"labelColor": "black", "title": "Temperatur in \u00b0C", "titleAnchor": "start", "titleColor": "black"}, "field": "AverageTemperature", "scale": {"domain": [18, 21]}, "type": "quantitative"}}, "title": {"text": "Globaler Temperaturverlauf (1920 \u2013 2013)", "fontSize": 18, "fontWeight": 300, "anchor": "start", "color": "#606061"}, "transform": [{"on": "Year", "regression": "AverageTemperature", "method": "linear"}]}, {"data": {"name": "data-a8e8341873f079ab6a0e8fafe62d3d87"}, "mark": {"type": "text", "align": "left", "baseline": "middle", "color": "#e00707", "dx": 360, "dy": 0, "fontSize": 14, "fontWeight": 800, "text": "Anstieg: 0.8 \u00b0C"}, "encoding": {"y": {"field": "end_position", "type": "quantitative"}}}], "data": {"name": "data-577afa6078a9bcb211c9dfe21d62cbd8"}, "width": 450, "$schema": "https://vega.github.io/schema/vega-lite/v5.15.1.json", "datasets": {"data-577afa6078a9bcb211c9dfe21d62cbd8": [{"Year": 1920, "AverageTemperature": 19.19}, {"Year": 1921, "AverageTemperature": 19.27}, {"Year": 1922, "AverageTemperature": 19.21}, {"Year": 1923, "AverageTemperature": 19.24}, {"Year": 1924, "AverageTemperature": 19.3}, {"Year": 1925, "AverageTemperature": 19.28}, {"Year": 1926, "AverageTemperature": 19.55}, {"Year": 1927, "AverageTemperature": 19.44}, {"Year": 1928, "AverageTemperature": 19.41}, {"Year": 1929, "AverageTemperature": 19.16}, {"Year": 1930, "AverageTemperature": 19.52}, {"Year": 1931, "AverageTemperature": 19.43}, {"Year": 1932, "AverageTemperature": 19.43}, {"Year": 1933, "AverageTemperature": 19.23}, {"Year": 1934, "AverageTemperature": 19.48}, {"Year": 1935, "AverageTemperature": 19.39}, {"Year": 1936, "AverageTemperature": 19.49}, {"Year": 1937, "AverageTemperature": 19.61}, {"Year": 1938, "AverageTemperature": 19.54}, {"Year": 1939, "AverageTemperature": 19.49}, {"Year": 1940, "AverageTemperature": 19.38}, {"Year": 1941, "AverageTemperature": 19.6}, {"Year": 1942, "AverageTemperature": 19.45}, {"Year": 1943, "AverageTemperature": 19.46}, {"Year": 1944, "AverageTemperature": 19.53}, {"Year": 1945, "AverageTemperature": 19.47}, {"Year": 1946, "AverageTemperature": 19.61}, {"Year": 1947, "AverageTemperature": 19.74}, {"Year": 1948, "AverageTemperature": 19.57}, {"Year": 1949, "AverageTemperature": 19.52}, {"Year": 1950, "AverageTemperature": 19.38}, {"Year": 1951, "AverageTemperature": 19.58}, {"Year": 1952, "AverageTemperature": 19.61}, {"Year": 1953, "AverageTemperature": 19.63}, {"Year": 1954, "AverageTemperature": 19.36}, {"Year": 1955, "AverageTemperature": 19.46}, {"Year": 1956, "AverageTemperature": 19.08}, {"Year": 1957, "AverageTemperature": 19.56}, {"Year": 1958, "AverageTemperature": 19.76}, {"Year": 1959, "AverageTemperature": 19.6}, {"Year": 1960, "AverageTemperature": 19.68}, {"Year": 1961, "AverageTemperature": 19.71}, {"Year": 1962, "AverageTemperature": 19.51}, {"Year": 1963, "AverageTemperature": 19.53}, {"Year": 1964, "AverageTemperature": 19.38}, {"Year": 1965, "AverageTemperature": 19.33}, {"Year": 1966, "AverageTemperature": 19.69}, {"Year": 1967, "AverageTemperature": 19.42}, {"Year": 1968, "AverageTemperature": 19.4}, {"Year": 1969, "AverageTemperature": 19.58}, {"Year": 1970, "AverageTemperature": 19.61}, {"Year": 1971, "AverageTemperature": 19.4}, {"Year": 1972, "AverageTemperature": 19.49}, {"Year": 1973, "AverageTemperature": 19.69}, {"Year": 1974, "AverageTemperature": 19.43}, {"Year": 1975, "AverageTemperature": 19.54}, {"Year": 1976, "AverageTemperature": 19.25}, {"Year": 1977, "AverageTemperature": 19.72}, {"Year": 1978, "AverageTemperature": 19.52}, {"Year": 1979, "AverageTemperature": 19.74}, {"Year": 1980, "AverageTemperature": 19.68}, {"Year": 1981, "AverageTemperature": 19.72}, {"Year": 1982, "AverageTemperature": 19.65}, {"Year": 1983, "AverageTemperature": 19.91}, {"Year": 1984, "AverageTemperature": 19.57}, {"Year": 1985, "AverageTemperature": 19.51}, {"Year": 1986, "AverageTemperature": 19.63}, {"Year": 1987, "AverageTemperature": 19.88}, {"Year": 1988, "AverageTemperature": 19.92}, {"Year": 1989, "AverageTemperature": 19.83}, {"Year": 1990, "AverageTemperature": 20.11}, {"Year": 1991, "AverageTemperature": 19.82}, {"Year": 1992, "AverageTemperature": 19.77}, {"Year": 1993, "AverageTemperature": 19.73}, {"Year": 1994, "AverageTemperature": 20.04}, {"Year": 1995, "AverageTemperature": 20.08}, {"Year": 1996, "AverageTemperature": 19.76}, {"Year": 1997, "AverageTemperature": 20.05}, {"Year": 1998, "AverageTemperature": 20.4}, {"Year": 1999, "AverageTemperature": 20.19}, {"Year": 2000, "AverageTemperature": 20.16}, {"Year": 2001, "AverageTemperature": 20.22}, {"Year": 2002, "AverageTemperature": 20.36}, {"Year": 2003, "AverageTemperature": 20.3}, {"Year": 2004, "AverageTemperature": 20.22}, {"Year": 2005, "AverageTemperature": 20.3}, {"Year": 2006, "AverageTemperature": 20.31}, {"Year": 2007, "AverageTemperature": 20.4}, {"Year": 2008, "AverageTemperature": 20.22}, {"Year": 2009, "AverageTemperature": 20.35}, {"Year": 2010, "AverageTemperature": 20.46}, {"Year": 2011, "AverageTemperature": 20.23}, {"Year": 2012, "AverageTemperature": 20.24}, {"Year": 2013, "AverageTemperature": 20.69}], "data-a8e8341873f079ab6a0e8fafe62d3d87": [{"end_position": 19.8}]}}, {"mode": "vega-lite"});
 </script>
 </div>
 </div>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df_nd_filtered <span class="op">=</span> df_nd_grouped[(df_nd_grouped[<span class="st">'Frequency'</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> ((</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    df_nd_grouped[<span class="st">'Disaster Type'</span>] <span class="op">==</span> <span class="st">'Flood'</span>) <span class="op">|</span> (df_nd_grouped[<span class="st">'Disaster Type'</span>] <span class="op">==</span> <span class="st">'Storm'</span>) <span class="op">|</span> (df_nd_grouped[<span class="st">'Disaster Type'</span>] <span class="op">==</span> <span class="st">'Extreme temperatur'</span>))]</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>global_disaster_freq <span class="op">=</span> df_nd_filtered.groupby(</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'Start Year'</span>])[<span class="st">'Frequency'</span>].<span class="bu">sum</span>().reset_index()</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>nd_line_chart <span class="op">=</span> alt.Chart(global_disaster_freq).mark_line(stroke<span class="op">=</span>chart_line_color).encode(</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>alt.X(<span class="st">'Start Year:O'</span>, axis<span class="op">=</span>alt.Axis(</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">''</span>,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        labelAngle<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        values<span class="op">=</span><span class="bu">list</span>(<span class="bu">range</span>(global_avg_temp[<span class="st">'Year'</span>].<span class="bu">min</span>(</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        ), global_avg_temp[<span class="st">'Year'</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span>, <span class="dv">5</span>)),</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        labelColor<span class="op">=</span><span class="st">'black'</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    )),</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>alt.Y(<span class="st">'Frequency:Q'</span>).axis(</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">'Häufigkeit'</span>,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        titleAnchor<span class="op">=</span><span class="st">'start'</span>,</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        labelColor<span class="op">=</span><span class="st">'black'</span>,</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        titleColor<span class="op">=</span><span class="st">'black'</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>).properties(</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="dv">950</span>,</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    height<span class="op">=</span><span class="dv">290</span>,</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span>{</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"text"</span>: <span class="st">"Weltweite Häufigkeit pro Jahr: Stürmen, Extremtemperaturen und Überschwemmungen (1920 – 2013)"</span>,</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fontSize"</span>: <span class="dv">18</span>,</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fontWeight"</span>: <span class="dv">300</span>,</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"anchor"</span>: <span class="st">'start'</span>,</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"color"</span>: chart_title_color,</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>nd_line_chart.configure(background<span class="op">=</span><span class="st">"rgba(0, 0, 0, 0)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="16">
 
 <style>
-  #altair-viz-b657b8b63acb4df691789a0bba1aaa00.vega-embed {
+  #altair-viz-8b325cab24194f9ab8196ea27a9c8a65.vega-embed {
     width: 100%;
     display: flex;
   }
 
-  #altair-viz-b657b8b63acb4df691789a0bba1aaa00.vega-embed details,
-  #altair-viz-b657b8b63acb4df691789a0bba1aaa00.vega-embed details summary {
+  #altair-viz-8b325cab24194f9ab8196ea27a9c8a65.vega-embed details,
+  #altair-viz-8b325cab24194f9ab8196ea27a9c8a65.vega-embed details summary {
     position: relative;
   }
 </style>
-<div id="altair-viz-b657b8b63acb4df691789a0bba1aaa00"></div>
+<div id="altair-viz-8b325cab24194f9ab8196ea27a9c8a65"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-b657b8b63acb4df691789a0bba1aaa00") {
-      outputDiv = document.getElementById("altair-viz-b657b8b63acb4df691789a0bba1aaa00");
+    if (outputDiv.id !== "altair-viz-8b325cab24194f9ab8196ea27a9c8a65") {
+      outputDiv = document.getElementById("altair-viz-8b325cab24194f9ab8196ea27a9c8a65");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
@@ -763,7 +580,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         .catch(showError)
         .then(() => displayChart(vegaEmbed));
     }
-  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}, "background": "rgba(0, 0, 0, 0)"}, "data": {"name": "data-a96181495893bc4226b7cdf3fe105392"}, "mark": {"type": "line", "stroke": "#3A86FF"}, "encoding": {"x": {"axis": {"labelAngle": 0, "labelColor": "black", "title": "", "values": [1920, 1925, 1930, 1935, 1940, 1945, 1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010]}, "field": "Start Year", "type": "ordinal"}, "y": {"axis": {"title": "H\u00e4ufigkeit", "titleAnchor": "start", "labelColor": "black", "titleColor": "black"}, "field": "Frequency", "type": "quantitative"}}, "height": 290, "title": {"text": "Weltweite H\u00e4ufigkeit pro Jahr: St\u00fcrmen, Extremtemperaturen und \u00dcberschwemmungen (1920 \u2013 2013)", "fontSize": 18, "fontWeight": 300, "anchor": "start", "color": "#d6d6d6"}, "width": 950, "$schema": "https://vega.github.io/schema/vega-lite/v5.15.1.json", "datasets": {"data-a96181495893bc4226b7cdf3fe105392": [{"Start Year": 1920, "Frequency": 2.0}, {"Start Year": 1922, "Frequency": 2.0}, {"Start Year": 1923, "Frequency": 6.0}, {"Start Year": 1924, "Frequency": 2.0}, {"Start Year": 1925, "Frequency": 4.0}, {"Start Year": 1926, "Frequency": 10.0}, {"Start Year": 1927, "Frequency": 6.0}, {"Start Year": 1928, "Frequency": 9.0}, {"Start Year": 1929, "Frequency": 2.0}, {"Start Year": 1930, "Frequency": 4.0}, {"Start Year": 1931, "Frequency": 5.0}, {"Start Year": 1932, "Frequency": 5.0}, {"Start Year": 1933, "Frequency": 5.0}, {"Start Year": 1934, "Frequency": 4.0}, {"Start Year": 1935, "Frequency": 8.0}, {"Start Year": 1936, "Frequency": 6.0}, {"Start Year": 1937, "Frequency": 5.0}, {"Start Year": 1938, "Frequency": 4.0}, {"Start Year": 1939, "Frequency": 4.0}, {"Start Year": 1940, "Frequency": 4.0}, {"Start Year": 1941, "Frequency": 4.0}, {"Start Year": 1942, "Frequency": 3.0}, {"Start Year": 1943, "Frequency": 5.0}, {"Start Year": 1944, "Frequency": 5.0}, {"Start Year": 1945, "Frequency": 7.0}, {"Start Year": 1946, "Frequency": 5.0}, {"Start Year": 1947, "Frequency": 8.0}, {"Start Year": 1948, "Frequency": 15.0}, {"Start Year": 1949, "Frequency": 10.0}, {"Start Year": 1950, "Frequency": 17.0}, {"Start Year": 1951, "Frequency": 18.0}, {"Start Year": 1952, "Frequency": 13.0}, {"Start Year": 1953, "Frequency": 23.0}, {"Start Year": 1954, "Frequency": 19.0}, {"Start Year": 1955, "Frequency": 22.0}, {"Start Year": 1956, "Frequency": 23.0}, {"Start Year": 1957, "Frequency": 20.0}, {"Start Year": 1958, "Frequency": 16.0}, {"Start Year": 1959, "Frequency": 29.0}, {"Start Year": 1960, "Frequency": 27.0}, {"Start Year": 1961, "Frequency": 22.0}, {"Start Year": 1962, "Frequency": 21.0}, {"Start Year": 1963, "Frequency": 29.0}, {"Start Year": 1964, "Frequency": 44.0}, {"Start Year": 1965, "Frequency": 38.0}, {"Start Year": 1966, "Frequency": 50.0}, {"Start Year": 1967, "Frequency": 51.0}, {"Start Year": 1968, "Frequency": 45.0}, {"Start Year": 1969, "Frequency": 39.0}, {"Start Year": 1970, "Frequency": 55.0}, {"Start Year": 1971, "Frequency": 37.0}, {"Start Year": 1972, "Frequency": 41.0}, {"Start Year": 1973, "Frequency": 42.0}, {"Start Year": 1974, "Frequency": 45.0}, {"Start Year": 1975, "Frequency": 42.0}, {"Start Year": 1976, "Frequency": 46.0}, {"Start Year": 1977, "Frequency": 76.0}, {"Start Year": 1978, "Frequency": 85.0}, {"Start Year": 1979, "Frequency": 64.0}, {"Start Year": 1980, "Frequency": 75.0}, {"Start Year": 1981, "Frequency": 88.0}, {"Start Year": 1982, "Frequency": 99.0}, {"Start Year": 1983, "Frequency": 103.0}, {"Start Year": 1984, "Frequency": 99.0}, {"Start Year": 1985, "Frequency": 106.0}, {"Start Year": 1986, "Frequency": 102.0}, {"Start Year": 1987, "Frequency": 123.0}, {"Start Year": 1988, "Frequency": 135.0}, {"Start Year": 1989, "Frequency": 118.0}, {"Start Year": 1990, "Frequency": 195.0}, {"Start Year": 1991, "Frequency": 141.0}, {"Start Year": 1992, "Frequency": 134.0}, {"Start Year": 1993, "Frequency": 191.0}, {"Start Year": 1994, "Frequency": 168.0}, {"Start Year": 1995, "Frequency": 173.0}, {"Start Year": 1996, "Frequency": 168.0}, {"Start Year": 1997, "Frequency": 174.0}, {"Start Year": 1998, "Frequency": 182.0}, {"Start Year": 1999, "Frequency": 228.0}, {"Start Year": 2000, "Frequency": 259.0}, {"Start Year": 2001, "Frequency": 261.0}, {"Start Year": 2002, "Frequency": 294.0}, {"Start Year": 2003, "Frequency": 244.0}, {"Start Year": 2004, "Frequency": 252.0}, {"Start Year": 2005, "Frequency": 321.0}, {"Start Year": 2006, "Frequency": 302.0}, {"Start Year": 2007, "Frequency": 321.0}, {"Start Year": 2008, "Frequency": 277.0}, {"Start Year": 2009, "Frequency": 238.0}, {"Start Year": 2010, "Frequency": 278.0}, {"Start Year": 2011, "Frequency": 240.0}, {"Start Year": 2012, "Frequency": 227.0}, {"Start Year": 2013, "Frequency": 253.0}]}}, {"mode": "vega-lite"});
+  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}, "background": "rgba(0, 0, 0, 0)"}, "data": {"name": "data-a96181495893bc4226b7cdf3fe105392"}, "mark": {"type": "line", "stroke": "#3A86FF"}, "encoding": {"x": {"axis": {"labelAngle": 0, "labelColor": "black", "title": "", "values": [1920, 1925, 1930, 1935, 1940, 1945, 1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010]}, "field": "Start Year", "type": "ordinal"}, "y": {"axis": {"title": "H\u00e4ufigkeit", "titleAnchor": "start", "labelColor": "black", "titleColor": "black"}, "field": "Frequency", "type": "quantitative"}}, "height": 290, "title": {"text": "Weltweite H\u00e4ufigkeit pro Jahr: St\u00fcrmen, Extremtemperaturen und \u00dcberschwemmungen (1920 \u2013 2013)", "fontSize": 18, "fontWeight": 300, "anchor": "start", "color": "#606061"}, "width": 450, "$schema": "https://vega.github.io/schema/vega-lite/v5.15.1.json", "datasets": {"data-a96181495893bc4226b7cdf3fe105392": [{"Start Year": 1920, "Frequency": 2.0}, {"Start Year": 1922, "Frequency": 2.0}, {"Start Year": 1923, "Frequency": 6.0}, {"Start Year": 1924, "Frequency": 2.0}, {"Start Year": 1925, "Frequency": 4.0}, {"Start Year": 1926, "Frequency": 10.0}, {"Start Year": 1927, "Frequency": 6.0}, {"Start Year": 1928, "Frequency": 9.0}, {"Start Year": 1929, "Frequency": 2.0}, {"Start Year": 1930, "Frequency": 4.0}, {"Start Year": 1931, "Frequency": 5.0}, {"Start Year": 1932, "Frequency": 5.0}, {"Start Year": 1933, "Frequency": 5.0}, {"Start Year": 1934, "Frequency": 4.0}, {"Start Year": 1935, "Frequency": 8.0}, {"Start Year": 1936, "Frequency": 6.0}, {"Start Year": 1937, "Frequency": 5.0}, {"Start Year": 1938, "Frequency": 4.0}, {"Start Year": 1939, "Frequency": 4.0}, {"Start Year": 1940, "Frequency": 4.0}, {"Start Year": 1941, "Frequency": 4.0}, {"Start Year": 1942, "Frequency": 3.0}, {"Start Year": 1943, "Frequency": 5.0}, {"Start Year": 1944, "Frequency": 5.0}, {"Start Year": 1945, "Frequency": 7.0}, {"Start Year": 1946, "Frequency": 5.0}, {"Start Year": 1947, "Frequency": 8.0}, {"Start Year": 1948, "Frequency": 15.0}, {"Start Year": 1949, "Frequency": 10.0}, {"Start Year": 1950, "Frequency": 17.0}, {"Start Year": 1951, "Frequency": 18.0}, {"Start Year": 1952, "Frequency": 13.0}, {"Start Year": 1953, "Frequency": 23.0}, {"Start Year": 1954, "Frequency": 19.0}, {"Start Year": 1955, "Frequency": 22.0}, {"Start Year": 1956, "Frequency": 23.0}, {"Start Year": 1957, "Frequency": 20.0}, {"Start Year": 1958, "Frequency": 16.0}, {"Start Year": 1959, "Frequency": 29.0}, {"Start Year": 1960, "Frequency": 27.0}, {"Start Year": 1961, "Frequency": 22.0}, {"Start Year": 1962, "Frequency": 21.0}, {"Start Year": 1963, "Frequency": 29.0}, {"Start Year": 1964, "Frequency": 44.0}, {"Start Year": 1965, "Frequency": 38.0}, {"Start Year": 1966, "Frequency": 50.0}, {"Start Year": 1967, "Frequency": 51.0}, {"Start Year": 1968, "Frequency": 45.0}, {"Start Year": 1969, "Frequency": 39.0}, {"Start Year": 1970, "Frequency": 55.0}, {"Start Year": 1971, "Frequency": 37.0}, {"Start Year": 1972, "Frequency": 41.0}, {"Start Year": 1973, "Frequency": 42.0}, {"Start Year": 1974, "Frequency": 45.0}, {"Start Year": 1975, "Frequency": 42.0}, {"Start Year": 1976, "Frequency": 46.0}, {"Start Year": 1977, "Frequency": 76.0}, {"Start Year": 1978, "Frequency": 85.0}, {"Start Year": 1979, "Frequency": 64.0}, {"Start Year": 1980, "Frequency": 75.0}, {"Start Year": 1981, "Frequency": 88.0}, {"Start Year": 1982, "Frequency": 99.0}, {"Start Year": 1983, "Frequency": 103.0}, {"Start Year": 1984, "Frequency": 99.0}, {"Start Year": 1985, "Frequency": 106.0}, {"Start Year": 1986, "Frequency": 102.0}, {"Start Year": 1987, "Frequency": 123.0}, {"Start Year": 1988, "Frequency": 135.0}, {"Start Year": 1989, "Frequency": 118.0}, {"Start Year": 1990, "Frequency": 195.0}, {"Start Year": 1991, "Frequency": 141.0}, {"Start Year": 1992, "Frequency": 134.0}, {"Start Year": 1993, "Frequency": 191.0}, {"Start Year": 1994, "Frequency": 168.0}, {"Start Year": 1995, "Frequency": 173.0}, {"Start Year": 1996, "Frequency": 168.0}, {"Start Year": 1997, "Frequency": 174.0}, {"Start Year": 1998, "Frequency": 182.0}, {"Start Year": 1999, "Frequency": 228.0}, {"Start Year": 2000, "Frequency": 259.0}, {"Start Year": 2001, "Frequency": 261.0}, {"Start Year": 2002, "Frequency": 294.0}, {"Start Year": 2003, "Frequency": 244.0}, {"Start Year": 2004, "Frequency": 252.0}, {"Start Year": 2005, "Frequency": 321.0}, {"Start Year": 2006, "Frequency": 302.0}, {"Start Year": 2007, "Frequency": 321.0}, {"Start Year": 2008, "Frequency": 277.0}, {"Start Year": 2009, "Frequency": 238.0}, {"Start Year": 2010, "Frequency": 278.0}, {"Start Year": 2011, "Frequency": 240.0}, {"Start Year": 2012, "Frequency": 227.0}, {"Start Year": 2013, "Frequency": 253.0}]}}, {"mode": "vega-lite"});
 </script>
 </div>
 </div>

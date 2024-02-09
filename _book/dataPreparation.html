@@ -170,7 +170,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#dataprepartion-naturaldisaster" id="toc-dataprepartion-naturaldisaster" class="nav-link active" data-scroll-target="#dataprepartion-naturaldisaster"><span class="header-section-number">3.1</span> Dataprepartion Naturaldisaster</a></li>
+  <li><a href="#dataprepartion-naturkatastrophen" id="toc-dataprepartion-naturkatastrophen" class="nav-link active" data-scroll-target="#dataprepartion-naturkatastrophen"><span class="header-section-number">3.1</span> Dataprepartion Naturkatastrophen</a></li>
   <li><a href="#data-preparation-für-temperatur" id="toc-data-preparation-für-temperatur" class="nav-link" data-scroll-target="#data-preparation-für-temperatur"><span class="header-section-number">3.2</span> Data Preparation für Temperatur</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dst-hdm/dst-docs/edit/main/dataPreparation.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/dst-hdm/dst-docs/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -195,26 +195,22 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Wir haben unsere beiden Datensätze unterschiedlich aufbereitet und einen Betrachtungszeitraum von 1920 bis 2013 gewählt. Grund dafür war der Naturkatastrophen Datensatz, der sich auf diesen Zeitraum bezieht. Im Folgenden wird die Aufbereitung genauer erläutert.</p>
-<section id="dataprepartion-naturaldisaster" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="dataprepartion-naturaldisaster"><span class="header-section-number">3.1</span> Dataprepartion Naturaldisaster</h2>
-<ul>
-<li>Nach einer kurzen explorativen Datenanalyse, in der wir die Spalten und NaN-Werte betrachteten, starteten wir direkt mit der Datenvorbereitung für den Datensatz zu Naturkatastrophen.</li>
-<li>Um wenig aussagekräftige Spalten zu entfernen, schrieben wir ein Skript, welches die Spalten auf die Häufigkeit von NaN Werten prüft und den Prozentsatz der Häufigkeit zurück gibt. Passend dazu erstellten wir ein zweites Skript, welches die Spalten entfernt, die mit ihrer prozentualen NaN Häufigkeit unter einem bestimmten Threashold liegen.</li>
-<li>Folgende Spalten wurde daraufhin entfernt: “External IDs”, “Event Name”, “OFDA Response”, “Declaration”, “AID Contribution (’000 US$)”, “Magnitude”, “Magnitude Scale”, “River Basin”, “Admin Units”, “Entry Date”, “Last Update”. Diese Spalten waren entweder für unsere Visualisierung nicht relevant oder enthielten zu viele NaN-Werte, was ihre Aussagekraft beeinträchtigt hätte.</li>
-<li>Anschließend erfolgte die Umwandlung der Datentypen, wobei entsprechender Python-Code verwendet wurde.</li>
-<li>Dann wurden die Daten nach “Country”, “Disaster Type”, “Start Year”, “ISO” gruppiert und anschließend ihre Häufigkeit pro Jahr in einer neuen Spalte “Frequency” abgebildet.</li>
-<li>Damit der Datensatz zeitlich vollständig ist, wurden Jahre, in denen keine Katastrophe in einem Land registriert wurde, mit eine “Frequency” von <code>0</code> ergänzt. Das war vorallem für die Darstellung der Häufigkeit im zeitlichen Verlauf wichtig.</li>
-<li>Um die Daten später auch auf einer Weltkarte darstellen zu können, wurden sie noch mit Geo-Daten angereichert.
+<p>Wir haben unsere beiden Datensätze unterschiedlich aufbereitet. Im Folgenden wird die Aufbereitung genauer erläutert.</p>
+<section id="dataprepartion-naturkatastrophen" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="dataprepartion-naturkatastrophen"><span class="header-section-number">3.1</span> Dataprepartion Naturkatastrophen</h2>
+<p>Nach einer kurzen explorativen Date<code>nanalyse</code>, in der wir die Spalten und <code>NaN</code>-Werte betrachteten, starteten wir direkt mit der Datenvorbereitung für den Datensatz zu Naturkatastrophen.</p>
+<p>Um wenig aussagekräftige Spalten zu entfernen, schrieben wir ein Skript, welches die Spalten auf die Häufigkeit der <code>NaN</code> Werten prüft. Passend dazu erstellten wir ein zweites Skript, welches die Spalten entfernt, die mit ihrer <code>NaN</code> Häufigkeit unter einem bestimmten Threashold liegen.</p>
+<p><strong>Folgende Spalten wurde daraufhin entfernt:</strong> <br> <em>External IDs</em>, <em>Event Name</em>, <em>OFDA Response</em>, <em>Declaration</em>, <em>AID Contribution (’000 US$)</em>, <em>Magnitude</em>, <em>Magnitude Scale</em>, <em>River Basin</em>, <em>Admin Units</em>, <em>Entry Date</em>, <em>Last Update</em>. <br>Diese Spalten waren entweder für unsere Visualisierung nicht relevant oder enthielten zu viele <code>NaN</code>-Werte, was ihre Aussagekraft beeinträchtigt hätte.</p>
+<p>Anschließend erfolgte die Umwandlung der Datentypen. Dann wurden die Daten nach <em>Country</em>, <em>Disaster Type</em>, <em>Start Year</em>, <em>ISO</em> gruppiert und anschließend ihre Häufigkeit pro Jahr in einer neuen Spalte namens <em>Frequency</em> abgebildet.</p>
+<p>Damit der Datensatz zeitlich vollständig ist, wurden Jahre, in denen keine Katastrophe in einem Land registriert wurde, mit eine <em>Frequency</em> von <code>0</code> ergänzt. Das war vorallem für die Darstellung der Häufigkeit im zeitlichen Verlauf wichtig. Hier können die Spalten <em>ISO</em>, <em>latitude</em>, <em>longitude</em>, <em>numeric</em> ignoriert werden.</p>
+<p><strong>Geodatenintegration</strong> <br> Um die Daten später auch auf einer Weltkarte darstellen zu können, wurden sie noch mit Geodaten angereichert.</p>
 <ul>
 <li>Koordinatendaten je Land (‘latitude’, ‘longitude’) von einem umgewandelten JSON-Objekt welches über den ISO Code des Landes der Daten zugeordnet wurde.</li>
 <li>Der nummerisch (<code>numeric</code>) Code des Landes nach dem ISO 4217 Standard. Dies war wichtig um die Daten später mit dem von Altair bereitgestellten <code>contries</code> Datensatz zu mappen. Der <code>contries</code> Datensatz lieferte die Weltkarte als Vektor.</li>
-</ul></li>
-<li>Abschließend wurde der DataFrame als CSV-Datei gespeichert.</li>
 </ul>
-<p>Die NaN Werte in den Spalten “ISO”, “latitude”, “longitude”, “numeric” kommen nur bei einer “Frequency” von <code>0</code> auf und daher nicht relevant für die spätere Darstellung.</p>
+<p>Abschließend wurde der DataFrame als CSV-Datei gespeichert.</p>
 <div class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="87">
 <div>
 
 
@@ -297,9 +293,9 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="data-preparation-für-temperatur" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="data-preparation-für-temperatur"><span class="header-section-number">3.2</span> Data Preparation für Temperatur</h2>
-<p>Zu Beginn der Datenvorbereitung für den Datensatz wurde jedem Land eine eindeutige UID-Zelle zugewiesen und diese wurde befüllt. Anschließend wurde die Datenstruktur durch das Betrachten von Head und Tail überprüft, woraufhin die verbleibenden NaN-Werte entfernt wurden. Danach wurden die Datentypen betrachtet und angepasst. Hierbei erfolgte eine Änderung des Datetime-Formats und der Datentyp der Spalte “Country” wurde zu “Category” geändert. Anschließend wurde der DataFrame nach der Jahreszahl gefiltert und alle UID-Werte (nach ISO 4217 Standard), die als “Unknown” gekennzeichnet waren, wurden entfernt. Nach dieser Aktion erfolgte die Verknüpfung mit den ISO-Ländercodes, wobei entsprechender Python-Code verwendet wurde. Anschließend wurden die Ländernamen an die Ländernamen des Datensatzes zu Naturkatastrophen angepasst. Zum Abschluss wurde eine CSV-Datei erstellt. Die verwendeten Bibliotheken waren Pandas und pycountry.</p>
+<p>Zu Beginn der Datenvorbereitung für den Datensatz wurde jedem Land eine eindeutige UID-Zelle zugewiesen und diese wurde befüllt. Anschließend wurde die Datenstruktur durch das Betrachten von Head und Tail überprüft, woraufhin die verbleibenden <code>NaN</code>-Werte entfernt wurden. Danach wurden die Datentypen betrachtet und angepasst. Hierbei erfolgte eine Änderung des Datetime-Formats und der Datentyp der Spalte “Country” wurde zu “Category” geändert. Anschließend wurde der DataFrame nach der Jahreszahl gefiltert und alle UID-Werte (nach ISO 4217 Standard), die als “Unknown” gekennzeichnet waren, wurden entfernt. Nach dieser Aktion erfolgte die Verknüpfung mit den ISO-Ländercodes, wobei entsprechender Python-Code verwendet wurde. Anschließend wurden die Ländernamen an die Ländernamen des Datensatzes zu Naturkatastrophen angepasst. Zum Abschluss wurde eine CSV-Datei erstellt. Die verwendeten Bibliotheken waren Pandas und pycountry.</p>
 <div class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="88">
 <div>
 
 

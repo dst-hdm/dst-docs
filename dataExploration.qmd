@@ -200,6 +200,6 @@ nd_temp_scatter.configure(background="rgba(0, 0, 0, 0)")
 
 Bei der ausführlichen Betrachtung der Daten, konnten wir einen klaren Zusammenhang zwischen dem Temperaturanstieg und 
 der steigenden Häufigkeit von Naturkatastrophen erkennen. Bei differenzierterer Betrachtung der einzelnen Katastrophentypen, fiel uns auf, dass
-vor allem die Typen "Sturm", "Extremtemperaturen" und "Überschwemmungen" in den letzten Jahren stark angestiegen sind. 
-Deshalb recherchierten wir die Ursachen der Entstehung dieser Katastrophen und kamen zu dem Ergebnis, dass diese besonders im zusammenhang mit Klimaveränderungen stehen.
-Um später bei der Entwicklung des Dashboards dem Nutzer ein ganzheitliches Bild bieten zu können, beschlossen wir die anderen Katastrophentypen trotzdem beizubehalten.
+vor allem die Typen *Sturm*, *Extremtemperaturen* und *Überschwemmungen* in den letzten Jahren stark angestiegen sind. 
+Daraufhin recherchierten wir die Ursachen der Entstehung dieser Katastrophen und kamen zu dem Ergebnis, dass diese besonders im zusammenhang mit Klimaveränderungen stehen.
+Um später aber bei der Entwicklung des Dashboards dem Nutzer ein ganzheitliches Bild bieten zu können, beschlossen wir die anderen Katastrophentypen trotzdem beizubehalten.

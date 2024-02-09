@@ -1,0 +1,79 @@
+# Preparation
+
+Wir haben unsere beiden Datensätze unterschiedlich aufbereitet und einen Betrachtungszeitraum von 1920 bis 2013 gewählt. 
+Grund dafür war der Naturkatastrophen Datensatz, der sich auf diesen Zeitraum bezieht. Im Folgenden wird die Aufbereitung genauer erläutert.
+
+## Dataprepartion Naturaldisaster
+
+- Nach einer kurzen explorativen Datenanalyse, in der wir die Spalten und NaN-Werte betrachteten, starteten wir direkt mit der Datenvorbereitung für den Datensatz zu Naturkatastrophen.
+- Um wenig aussagekräftige Spalten zu entfernen, schrieben wir ein Skript, welches die Spalten auf die Häufigkeit von NaN
+    Werten prüft und den Prozentsatz der Häufigkeit zurück gibt. Passend dazu erstellten wir ein zweites Skript, welches die Spalten
+    entfernt, die mit ihrer prozentualen NaN Häufigkeit unter einem bestimmten Threashold liegen.
+- Folgende Spalten wurde daraufhin entfernt: "External IDs", "Event Name", "OFDA Response", "Declaration", "AID Contribution ('000 US$)", "Magnitude", "Magnitude Scale", "River Basin", "Admin Units", "Entry Date", "Last Update". Diese Spalten waren entweder für unsere Visualisierung nicht relevant oder enthielten zu viele NaN-Werte, was ihre Aussagekraft beeinträchtigt hätte.
+- Anschließend erfolgte die Umwandlung der Datentypen, wobei entsprechender Python-Code verwendet wurde.
+- Dann wurden die Daten nach "Country", "Disaster Type", "Start Year", "ISO" gruppiert und anschließend ihre Häufigkeit pro Jahr 
+    in einer neuen Spalte "Frequency" abgebildet.
+- Damit der Datensatz zeitlich vollständig ist, wurden Jahre, in denen keine Katastrophe in einem Land registriert wurde, mit eine "Frequency" von 
+    `0` ergänzt. Das war vorallem für die Darstellung der Häufigkeit im zeitlichen Verlauf wichtig.
+- Um die Daten später auch auf einer Weltkarte darstellen zu können, wurden sie noch mit Geo-Daten angereichert.    
+    - Koordinatendaten je Land ('latitude', 'longitude') von einem umgewandelten JSON-Objekt welches über den ISO Code des Landes der Daten zugeordnet wurde.
+    - Der nummerisch (`numeric`) Code des Landes nach dem ISO 4217 Standard. Dies war wichtig um die Daten später mit dem von Altair bereitgestellten `contries` Datensatz
+    zu mappen. Der `contries` Datensatz lieferte die Weltkarte als Vektor.
+- Abschließend wurde der DataFrame als CSV-Datei gespeichert.
+
+Die NaN Werte in den Spalten "ISO", "latitude", "longitude", "numeric" kommen nur bei einer "Frequency" von `0` auf und daher nicht relevant für die spätere Darstellung. 
+```{python}
+#| echo: false
+import pandas as pd
+import altair as alt
+from vega_datasets import data
+
+alt.data_transformers.disable_max_rows()
+
+df_nd = pd.read_csv('./data/InternationalDisaster_cleaned.csv')
+df_nd_grouped = pd.read_csv('data/InternationalDisaster_grouped.csv')
+df_temp = pd.read_csv('data/GlobalLandTemperatur_cleaned.csv')
+df_temp_agg = pd.read_csv('data/GlobalLandTemperatur_aggregated.csv')
+
+chart_title_color = "#606061"
+chart_line_color = "#3A86FF"
+chart_marker_color = "#e00707"
+chart_width = 450
+nd_type_colors = {
+    'Drought': '#FFBC42',
+    'Earthquake': '#b55a1d',
+    'Epidemic': '#06D6A0',
+    'Extreme temperature': '#EF476F',
+    'Flood': '#3A86FF',
+    'Fog': '#118AB2',
+    'Impact': '#16225c',
+    'Infestation': '#2f9e29',
+    'Mass movement (dry)': '#78259c',
+    'Mass movement (wet)': '#512599',
+    'Storm': '#287fa1',
+    'Volcanic activity': '#ab4c29',
+    'Wildfire': '#b52222'
+}
+
+nd_type_colors_red = {
+    'Extreme temperature': nd_type_colors['Extreme temperature'],
+    'Storm': nd_type_colors['Storm'],
+    'Flood': nd_type_colors['Flood']
+}
+df_nd_grouped.head()
+```
+## Data Preparation für Temperatur
+Zu Beginn der Datenvorbereitung für den Datensatz wurde jedem Land eine eindeutige UID-Zelle zugewiesen und diese wurde befüllt.
+Anschließend wurde die Datenstruktur durch das Betrachten von Head und Tail überprüft, woraufhin die verbleibenden NaN-Werte entfernt wurden.
+Danach wurden die Datentypen betrachtet und angepasst. Hierbei erfolgte eine Änderung des Datetime-Formats und der Datentyp der Spalte "Country" wurde zu "Category" geändert.
+Anschließend wurde der DataFrame nach der Jahreszahl gefiltert und alle UID-Werte (nach ISO 4217 Standard), die als "Unknown" gekennzeichnet waren, wurden entfernt.
+Nach dieser Aktion erfolgte die Verknüpfung mit den ISO-Ländercodes, wobei entsprechender Python-Code verwendet wurde.
+Anschließend wurden die Ländernamen an die Ländernamen des Datensatzes zu Naturkatastrophen angepasst.
+Zum Abschluss wurde eine CSV-Datei erstellt.
+Die verwendeten Bibliotheken waren Pandas und pycountry.
+```{python}
+#| echo: false
+
+df_temp.head()
+
+```

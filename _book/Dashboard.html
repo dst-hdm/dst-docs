@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Dokumentation Data Storytelling - 4&nbsp; Entwicklung des Dashboards</title>
+<title>Dokumentation Data Storytelling - 5&nbsp; Entwicklung des Dashboards</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./storyline.html" rel="next">
-<link href="./dataPrep.html" rel="prev">
+<link href="./dataExploration.html" rel="prev">
 <link href=".//images/logo.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -66,8 +66,12 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<meta property="og:title" content="Dokumentation Data Storytelling - 4&nbsp; Entwicklung des Dashboards">
+<meta property="og:title" content="Dokumentation Data Storytelling - 5&nbsp; Entwicklung des Dashboards">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://dst-hdm.github.io/dst-docs/images/Dashboard-Graphen – Katastrophenanalyse und Klimawandel.png">
 <meta property="og:site-name" content="Dokumentation Data Storytelling">
+<meta property="og:image:height" content="3947">
+<meta property="og:image:width" content="1920">
 </head>
 
 <body class="nav-sidebar floating">
@@ -79,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dashboard.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Entwicklung des Dashboards</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dashboard.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Entwicklung des Dashboards</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -111,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Einleitung:</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Einleitung</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -122,32 +126,38 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dataPrep.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Dataprep</span></span></a>
+  <a href="./dataPreparation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Preparation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dataExploration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploration</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dashboard.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Entwicklung des Dashboards</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Entwicklung des Dashboards</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./storyline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Entwicklung der Präsentation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Entwicklung der Präsentation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./presentation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Aufbau der Präsentation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Aufbau der Präsentation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./probleme.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Projektherausforderungen im Detail:</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Projektherausforderungen im Detail</span></span></a>
   </div>
 </li>
     </ul>
@@ -160,9 +170,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#dashboard-konzeption" id="toc-dashboard-konzeption" class="nav-link active" data-scroll-target="#dashboard-konzeption"><span class="header-section-number">4.1</span> Dashboard Konzeption:</a></li>
-  <li><a href="#dashboard-code" id="toc-dashboard-code" class="nav-link" data-scroll-target="#dashboard-code"><span class="header-section-number">4.2</span> Dashboard Code:</a></li>
-  <li><a href="#dashboard-aufbau" id="toc-dashboard-aufbau" class="nav-link" data-scroll-target="#dashboard-aufbau"><span class="header-section-number">4.3</span> Dashboard Aufbau</a></li>
+  <li><a href="#dashboard-konzeption" id="toc-dashboard-konzeption" class="nav-link active" data-scroll-target="#dashboard-konzeption"><span class="header-section-number">5.1</span> Dashboard Konzeption</a></li>
+  <li><a href="#dashboard-design" id="toc-dashboard-design" class="nav-link" data-scroll-target="#dashboard-design"><span class="header-section-number">5.2</span> Dashboard Design</a></li>
+  <li><a href="#dashboard-aufbau" id="toc-dashboard-aufbau" class="nav-link" data-scroll-target="#dashboard-aufbau"><span class="header-section-number">5.3</span> Dashboard Aufbau</a></li>
+  <li><a href="#dashboard-code" id="toc-dashboard-code" class="nav-link" data-scroll-target="#dashboard-code"><span class="header-section-number">5.4</span> Dashboard Code</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/dst-hdm/dst-docs/edit/main/dashboard.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/dst-hdm/dst-docs/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -171,7 +182,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Entwicklung des Dashboards</span></h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Entwicklung des Dashboards</span></h1>
 </div>
 
 
@@ -186,44 +197,20 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="dashboard-konzeption" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="dashboard-konzeption"><span class="header-section-number">4.1</span> Dashboard Konzeption:</h2>
+<section id="dashboard-konzeption" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="dashboard-konzeption"><span class="header-section-number">5.1</span> Dashboard Konzeption</h2>
 <ul>
 <li>Bei der Konzeption des Dashboards orientierten wir uns an folgenden Anforderungen: Interaktivität, Nutzung von mindestens 5 verschiedenen Charttypen, sinnvolle Verwendung von Farben und Legenden sowie unterschiedliche visuelle Aufbereitung der Diagramme.</li>
 <li>Die zugrunde liegende Aussage betonte die Wichtigkeit der Bewältigung des Klimawandels und der Minderung seiner Auswirkungen für den Schutz unseres Planeten, die Sicherheit der Menschheit und die Erhaltung der Lebensgrundlagen für zukünftige Generationen.</li>
 </ul>
 </section>
-<section id="dashboard-code" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="dashboard-code"><span class="header-section-number">4.2</span> Dashboard Code:</h2>
-<ul>
-<li><p>Nach Abschluss der Konzeptionsphase begann die interessante Phase der Dashboard-Entwicklung.</p></li>
-<li><p>Für die Erstellung des Dashboards wurden Streamlit, Altair, das VegaDataset, pandas, numpy und pycountry genutzt.</p></li>
-<li><p>Die Ordnerstruktur für das Projekt sieht wie folgt aus:</p>
-<ul>
-<li><code>charts</code>: Enthält alle erstellten Charts, die im Dashboard zu finden sind. Der Unterordner <code>__pycache__</code> speichert Zwischenspeicherdateien.</li>
-<li><code>media</code>: Beinhaltet alle Flaggen der Länder im SVG-Format.</li>
-<li><code>styles</code>: Enthält das Styling für das Dashboard.</li>
-<li><code>utils</code>: Teilt sich weiter auf:
-<ul>
-<li><code>data</code>: Enthält CSV-Dateien, die für die Erstellung der Diagramme notwendig sind.</li>
-<li><code>__pycache__</code>: Speichert Zwischenspeicherdateien.</li>
-</ul></li>
-</ul></li>
-<li><p>Innerhalb des <code>charts</code>-Ordners befinden sich alle erstellten Charts, die im Dashboard integriert sind.</p></li>
-<li><p>Im <code>media</code>-Ordner sind die SVG-Dateien der Länderflaggen abgelegt.</p></li>
-<li><p>Der <code>styles</code>-Ordner enthält das Styling für das Dashboard.</p></li>
-<li><p>Der <code>utils</code>-Ordner gliedert sich in weitere Unterordner:</p>
-<ul>
-<li><code>data</code>: Enthält alle CSV-Dateien, die für die Diagrammerstellung benötigt werden.</li>
-<li><code>__pycache__</code>: Speichert Zwischenspeicherdateien.</li>
-</ul></li>
-<li><p>Zusätzlich existieren die Dateien <code>helper.py</code>, <code>load_data.py</code>, <code>tweaker.py</code>, <code>nd_type_color.py</code> sowie die beiden Dataprep-Skripte.</p></li>
-<li><p>Die Datei <code>analysis.ipynb</code> beinhaltet die Analyse des Projekts. Es gibt außerdem eine <code>.gitignore</code>-Datei, <code>requirements.txt</code> und <code>read.md</code>.</p></li>
-<li><p>Zuletzt existiert die Datei <code>app.py</code>, die das eigentliche Dashboard darstellt.</p></li>
-</ul>
+<section id="dashboard-design" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="dashboard-design"><span class="header-section-number">5.2</span> Dashboard Design</h2>
+<p>Für das Dashboard wählten wir eine Differenzierung zwischen Global und Land. So kann unsere gewählte Zielgruppe (Politiker) während der Auseinandersetzung mit dem Thema sowohl globale Zusammenhänge erkennen, als auch spezifisch auf einzelne Länder eingehen. <br> Dafür erstellten wir mittels <em>CC Adobe XD</em> Wireframes für einen ersten Überblick. Dies diente als Grundlage für Gruppendiskussionen und der späteren Aufteilung der Umsetzung. <br> <br></p>
+<p><strong>Wireframe Dashboard – Global</strong> <img src="images/Dashboard-Graphen – Katastrophenanalyse und Klimawandel.png" title="Wireframe Dashboard – Global" class="img-fluid" alt="Wireframe Dashboard – Global"> <br> <br> <strong>Wireframe Dashboard – Land</strong> <img src="images/Dashboard Katastrophenanalyse und Klimawandel.png" title="Wireframe Dashboard – Land" class="img-fluid" alt="Wireframe Dashboard – Land"></p>
 </section>
-<section id="dashboard-aufbau" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="dashboard-aufbau"><span class="header-section-number">4.3</span> Dashboard Aufbau</h2>
+<section id="dashboard-aufbau" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="dashboard-aufbau"><span class="header-section-number">5.3</span> Dashboard Aufbau</h2>
 <ul>
 <li>Das Chart “Katastrophenverlauf” wurde genutzt, um zu zeigen, dass die Anzahl von Naturkatastrophen in den letzten Jahren zugenommen hat.</li>
 <li>Ebenso wurde der Linechart über den Temperaturverlauf verwendet, um darzustellen, dass die Durchschnittstemperatur auf der Erde seit Jahrzehnten steigt, insbesondere unter anthropologischem Einfluss.</li>
@@ -235,6 +222,22 @@ ul.task-list li input[type="checkbox"] {
 <li>Die Interaktivität wurde durch verschiedene Filter umgesetzt, sodass Jahr, Katastrophentyp und Land filterbar sind und die Graphen “Katastrophenverlauf” und “Scatterplot” sich entsprechend ändern.</li>
 <li>Die Abfolge der Graphen soll die Kernaussage verdeutlichen, dass durch ansteigende Temperaturen Naturkatastrophen zunehmen.</li>
 </ul>
+</section>
+<section id="dashboard-code" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="dashboard-code"><span class="header-section-number">5.4</span> Dashboard Code</h2>
+<ul>
+<li><p>Nach Abschluss der Konzeptionsphase begann die interessante Phase der Dashboard-Entwicklung.</p></li>
+<li><p>Für die Erstellung des Dashboards wurden Streamlit, Altair, das VegaDataset, pandas, numpy und pycountry genutzt.</p></li>
+<li><p>Die Ordnerstruktur für das Projekt sieht wie folgt aus:</p>
+<ul>
+<li><code>charts</code>: Enthält alle erstellten Charts, die im Dashboard zu finden sind.</li>
+<li><code>media</code>: Beinhaltet alle Flaggen der Länder im SVG-Format und weitere Bilder.</li>
+<li><code>styles</code>: Enthält das Styling für das Dashboard.</li>
+<li><code>utils</code>: Enthält Helferfunktionen, das Language Mapping der Katastrophentypen, den Dataloader, ein globales Objekt, welches die Farben der Katastrophentypen beinhaltet, die Datapreparation Files und eine Erweiterung der für <em>Streamlit</em> mit der Klassen und ID´s an Elemente vergeben werden können.</li>
+<li><code>data</code>: Enthält CSV- und JSON-Dateien, die für die Erstellung der Diagramme notwendig sind.</li>
+</ul></li>
+</ul>
+<p><a href="https://github.com/dst-hdm/dst-app">Link zum GitHub Repository</a></p>
 
 
 </section>
@@ -590,13 +593,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./dataPrep.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Dataprep</span></span>
+      <a href="./dataExploration.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploration</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./storyline.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Entwicklung der Präsentation</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Entwicklung der Präsentation</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

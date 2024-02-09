@@ -4,7 +4,6 @@ project:
 execute:
   freeze: auto
 
-
 book:
   page-navigation: true
   title: "Dokumentation Data Storytelling"
@@ -19,7 +18,8 @@ book:
   chapters:
     - index.md
     - ideenfindung.qmd
-    - dataPrep.qmd
+    - dataPreparation.qmd
+    - dataExploration.qmd
     - dashboard.qmd
     - storyline.qmd
     - presentation.qmd

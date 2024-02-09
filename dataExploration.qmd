@@ -1,0 +1,205 @@
+## Exploration
+Um ein umfassenderes Verständnis für unsere Daten zu entwickeln und die Aussagekraft unserer Ergebnisse zu verstärken, 
+haben wir mithilfe von Altair zunächst grundlegende Diagramme erstellt. Dies diente dazu, eine tiefere Einsicht in unsere Daten zu gewinnen. 
+Wir begannen mit der Entwicklung eines Diagramms, das den Temperaturverlauf von 1920 bis 2013 zeigt. Anschließend erstellten wir ein 
+Diagramm mit der Anzahl der Naturkatastrophen von 1920 bis 2013. Zusätzlich wurden weitere Balkendiagramme entworfen, 
+um das Verhältnis verschiedener Naturkatastrophen zu visualisieren. Um weitere Zusammenhänge der beiden Datensätze zu finden, 
+stellten wir beide in einem Scatterplot gegenüber. 
+Obwohl dieser Prozess mitunter anspruchsvoll war, erwies er sich als äußerst hilfreich für die Fortschritte in unserem Projekt. 
+Die erstellten Diagramme ermöglichten uns tiefe Einblicke in unsere Daten zu gewinnen.
+
+```{python}
+#| echo: false
+import pandas as pd
+import altair as alt
+from vega_datasets import data
+
+alt.data_transformers.disable_max_rows()
+
+df_nd = pd.read_csv('./data/InternationalDisaster_cleaned.csv')
+df_nd_grouped = pd.read_csv('data/InternationalDisaster_grouped.csv')
+df_temp = pd.read_csv('data/GlobalLandTemperatur_cleaned.csv')
+df_temp_agg = pd.read_csv('data/GlobalLandTemperatur_aggregated.csv')
+df_temp_nd_combined = pd.read_csv('data/df_temp_nd_combined.csv')
+
+chart_title_color = "#606061"
+chart_line_color = "#3A86FF"
+chart_marker_color = "#e00707"
+chart_width = 590
+nd_type_colors = {
+    'Drought': '#FFBC42',
+    'Earthquake': '#b55a1d',
+    'Epidemic': '#06D6A0',
+    'Extreme temperature': '#EF476F',
+    'Flood': '#3A86FF',
+    'Fog': '#118AB2',
+    'Impact': '#16225c',
+    'Infestation': '#2f9e29',
+    'Mass movement (dry)': '#78259c',
+    'Mass movement (wet)': '#512599',
+    'Storm': '#287fa1',
+    'Volcanic activity': '#ab4c29',
+    'Wildfire': '#b52222'
+}
+
+nd_type_colors_red = {
+    'Extreme temperature': nd_type_colors['Extreme temperature'],
+    'Storm': nd_type_colors['Storm'],
+    'Flood': nd_type_colors['Flood']
+}
+```
+
+```{python}
+# | echo: false
+
+global_avg_temp = df_temp_agg.groupby(
+    'Year')['AverageTemperature'].mean().reset_index()
+
+global_avg_temp['Year'] = pd.to_datetime(
+    global_avg_temp['Year'], format='%Y')
+global_avg_temp['Year'] = global_avg_temp['Year'].dt.year
+
+global_avg_temp['AverageTemperature'] = global_avg_temp['AverageTemperature'].round(
+    2)
+
+glob_temp_chart = alt.Chart(global_avg_temp).mark_line(stroke=chart_line_color).encode(
+    x=alt.X('Year:O', axis=alt.Axis(
+        title='',
+        labelAngle=0,
+        values=list(range(global_avg_temp['Year'].min(
+        ), global_avg_temp['Year'].max() + 1, 5)),
+        titleAnchor='start',
+        labelColor='black',
+    )),
+    y=alt.Y('AverageTemperature:Q', axis=alt.Axis(
+        title='Temperatur in °C',
+        titleAnchor='start',
+        labelColor='black',
+        titleColor='black',
+    ), scale=alt.Scale(
+        domain=[18, 21])),
+    tooltip=['Year', 'AverageTemperature']
+).properties(
+    width=chart_width,
+    title={
+        "text": "Globaler Temperaturverlauf",
+        "fontSize": 18,
+        "fontWeight": 300,
+        "anchor": 'start',
+        "color": chart_title_color,
+    },
+)
+
+
+glob_temp_regression = glob_temp_chart.transform_regression(
+    'Year', 'AverageTemperature', method='linear'
+).mark_line(color=chart_marker_color)
+
+text_at_end = alt.Chart(pd.DataFrame({'end_position': [19.8]})).mark_text(
+    align='left',
+    baseline='middle',
+    dx=300,
+    dy=-40,
+    color=chart_marker_color,
+    text='Anstieg: 0.8 °C',
+    fontWeight=800,
+    fontSize=14
+).encode(
+    y='end_position:Q'
+)
+
+
+glob_temp_chart.configure(background="rgba(0, 0, 0, 0)")
+
+(glob_temp_chart + glob_temp_regression +
+ text_at_end).configure(background="rgba(0, 0, 0, 0)")
+```
+<br/>
+```{python}
+#| echo: false
+
+df_nd_filtered = df_nd_grouped[(df_nd_grouped['Frequency'] > 0) & ((
+    df_nd_grouped['Disaster Type'] == 'Flood') | (df_nd_grouped['Disaster Type'] == 'Storm') | (df_nd_grouped['Disaster Type'] == 'Extreme temperatur'))]
+global_disaster_freq = df_nd_filtered.groupby(
+    ['Start Year'])['Frequency'].sum().reset_index()
+
+nd_line_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_color).encode(
+    x=alt.X('Start Year:O', axis=alt.Axis(
+        title='',
+        labelAngle=0,
+        values=list(range(global_avg_temp['Year'].min(
+        ), global_avg_temp['Year'].max() + 1, 5)),
+        labelColor='black',
+    )),
+    y=alt.Y('Frequency:Q').axis(
+        title='Häufigkeit',
+        titleAnchor='start',
+        labelColor='black',
+        titleColor='black'
+    ),
+).properties(
+    width=chart_width,
+    height=290,
+    title={
+        "text": "Weltweite Häufigkeit pro Jahr: Stürmen, Extremtemperaturen und Überschwemmungen",
+        "fontSize": 18,
+        "fontWeight": 300,
+        "anchor": 'start',
+        "color": chart_title_color,
+    },
+)
+nd_line_chart.configure(background="rgba(0, 0, 0, 0)")
+```
+<br/>
+```{python}
+#| echo: false
+
+global_disaster_freq = df_temp_nd_combined.groupby(['AverageTemperature', 'Disaster Type'])[
+    'Frequency'].sum().reset_index()
+
+global_disaster_freq_filtered = global_disaster_freq[(global_disaster_freq['Disaster Type'] == 'Flood') | (
+    global_disaster_freq['Disaster Type'] == 'Storm') | (global_disaster_freq['Disaster Type'] == 'Extreme temperature')]
+
+min_temp = int(global_disaster_freq_filtered['AverageTemperature'].min())
+max_temp = int(global_disaster_freq_filtered['AverageTemperature'].max())
+
+x_values = list(range(min_temp, max_temp + 1))
+
+nd_temp_scatter = alt.Chart(global_disaster_freq_filtered).mark_circle().encode(
+    x=alt.X('AverageTemperature:O', title='Durchschnittstemperatur in °C ',
+            axis=alt.Axis(titleAnchor='start',
+                          format=".3f",
+            )),
+    y=alt.Y('Frequency:Q', axis=alt.Axis(
+        title='Häufigkeit',
+        titleAnchor='start',
+    )),
+    color=alt.Color('Disaster Type',
+                    title='Katastrophentyp',
+                    scale=alt.Scale(domain=list(nd_type_colors_red.keys()),
+                                    range=list(nd_type_colors_red.values())),
+                    legend=alt.Legend(orient='bottom')), 
+    tooltip=['AverageTemperature', 'Frequency', 'Disaster Type']
+).properties(
+    width=900,
+    height=400,
+    title={
+        "text": "Häufigkeit der Katastrophentypen im Zusammenhang mit der Temperatur",
+        "fontSize": 18,
+        "fontWeight": 300,
+        "anchor": 'start',
+        "color": chart_title_color,
+    },
+)
+
+
+nd_temp_scatter.configure(background="rgba(0, 0, 0, 0)")
+```
+
+<br>
+
+Bei der ausführlichen Betrachtung der Daten, konnten wir einen klaren Zusammenhang zwischen dem Temperaturanstieg und 
+der steigenden Häufigkeit von Naturkatastrophen erkennen. Bei differenzierterer Betrachtung der einzelnen Katastrophentypen, fiel uns auf, dass
+vor allem die Typen "Sturm", "Extremtemperaturen" und "Überschwemmungen" in den letzten Jahren stark angestiegen sind. 
+Deshalb recherchierten wir die Ursachen der Entstehung dieser Katastrophen und kamen zu dem Ergebnis, dass diese besonders im zusammenhang mit Klimaveränderungen stehen.
+Um später bei der Entwicklung des Dashboards dem Nutzer ein ganzheitliches Bild bieten zu können, beschlossen wir die anderen Katastrophentypen trotzdem beizubehalten.

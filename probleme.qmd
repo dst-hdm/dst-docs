@@ -1,4 +1,4 @@
-# Projektherausforderungen im Detail:
+# Projektherausforderungen im Detail
 
 1. **Beschaffung des Datensatzes:**
    Die Datensatzbeschaffung gestaltete sich als anspruchsvoll, da die Definition von Naturkatastrophen variabel ist. Zudem waren die verfügbaren Datensätze häufig länderspezifisch und wiesen Unstimmigkeiten auf.

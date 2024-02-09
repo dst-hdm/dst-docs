@@ -151,7 +151,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./probleme.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Projektherausforderungen im Detail:</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Projektherausforderungen im Detail</span></span></a>
   </div>
 </li>
     </ul>
@@ -195,19 +195,21 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="3.1" class="anchored" data-anchor-id="dataprepartion-naturaldisaster"><span class="header-section-number">3.1</span> Dataprepartion Naturaldisaster:</h2>
 <ul>
 <li>Nach einer kurzen explorativen Datenanalyse, in der wir die Spalten und NaN-Werte betrachteten, starteten wir direkt mit der Datenvorbereitung für den Datensatz zu Naturkatastrophen.</li>
-<li>Zuerst normalisierten wir die Länder mithilfe der Koordinaten und wandelten sie direkt in DataFrames um.</li>
-<li>Anschließend entfernten wir bestimmte Spalten, darunter “External IDs”, “Event Name”, “OFDA Response”, “Declaration”, “AID Contribution (’000 US$)”, “Magnitude”, “Magnitude Scale”, “River Basin”, “Admin Units”, “Entry Date”, “Last Update”. Diese Spalten waren entweder für unsere Visualisierung nicht relevant oder enthielten zu viele NaN-Werte, was ihre Aussagekraft beeinträchtigt hätte.</li>
-<li>Nach diesem Schritt entfernten wir die verbleibenden NaN-Werte.</li>
-<li>Anschließend erfolgte die Umwandlung der Datentypen, wobei entsprechender Python-Code verwendet wurde.
+<li>Um wenig aussagekräftige Spalten zu entfernen, schrieben wir ein Skript, welches die Spalten auf die Häufigkeit von NaN Werten prüft und den Prozentsatz der Häufigkeit zurück gibt. Passend dazu erstellten wir ein zweites Skript, welches die Spalten entfernt, die mit ihrer prozentualen NaN Häufigkeit unter einem bestimmten Threashold liegen.</li>
+<li>Folgende Spalten wurde daraufhin entfernt: “External IDs”, “Event Name”, “OFDA Response”, “Declaration”, “AID Contribution (’000 US$)”, “Magnitude”, “Magnitude Scale”, “River Basin”, “Admin Units”, “Entry Date”, “Last Update”. Diese Spalten waren entweder für unsere Visualisierung nicht relevant oder enthielten zu viele NaN-Werte, was ihre Aussagekraft beeinträchtigt hätte.</li>
+<li>Anschließend erfolgte die Umwandlung der Datentypen, wobei entsprechender Python-Code verwendet wurde.</li>
+<li>Dann wurden die Daten nach “Country”, “Disaster Type”, “Start Year”, “ISO” gruppiert und anschließend ihre Häufigkeit pro Jahr in einer neuen Spalte “Frequency” abgebildet.</li>
+<li>Damit der Datensatz zeitlich vollständig ist, wurden Jahre, in denen keine Katastrophe in einem Land registriert wurde, mit eine “Frequency” von <code>0</code> ergänzt. Das war vorallem für die Darstellung der Häufigkeit im zeitlichen Verlauf wichtig.</li>
+<li>Um die Daten später auch auf einer Weltkarte darstellen zu können, wurden sie noch mit Geo-Daten angereichert.
 <ul>
-<li>Der Code erstellte einen Pandas DataFrame namens <code>empty_df</code>, der alle möglichen Kombinationen von ‘Country’, ‘Disaster Type’ und ‘Start Year’ enthielt. Dieser DataFrame wurde durch die Verwendung von MultiIndex erstellt, um die verschiedenen Dimensionen zu berücksichtigen.</li>
-<li>Der Code gruppierte dann einen vorhandenen DataFrame (<code>df_cleaned</code>) nach den Spalten ‘Country’, ‘Disaster Type’, ‘Start Year’ und ‘ISO’, um die Häufigkeit von Katastrophen pro Land, Katastrophentyp und Startjahr zu zählen. Diese Informationen wurden in einem DataFrame namens <code>df_nd_grouped</code> gespeichert. Der leere DataFrame wurde dann mit diesen gruppierten Daten gemerged, um fehlende Werte mit 0 zu füllen. Schließlich erfolgte eine weitere Fusion mit einem DataFrame (<code>df_coordinates</code>), der Länderkoordinaten enthielt, um ein finales DataFrame namens <code>merged_group</code> zu erstellen.</li>
+<li>Koordinatendaten je Land (‘latitude’, ‘longitude’) von einem umgewandelten JSON-Objekt welches über den ISO Code des Landes der Daten zugeordnet wurde.</li>
+<li>Der nummerisch (<code>numeric</code>) Code des Landes nach dem ISO 4217 Standard. Dies war wichtig um die Daten später mit dem von Altair bereitgestellten <code>contries</code> Datensatz zu mappen. Der <code>contries</code> Datensatz lieferte die Weltkarte als Vektor.</li>
 </ul></li>
 <li>Abschließend wurde der DataFrame als CSV-Datei gespeichert.</li>
-<li>Die verwendeten Bibliotheken waren Pandas und NumPy. Zusätzlich wurde eine JSON-Datei für die Ländercodes importiert.</li>
 </ul>
+<p><strong>Bereinigter Datensatz</strong>/ Die NaN Werte in den Spalten “ISO”, “latitude”, “longitude”, “numeric” kommen nur bei einer “Frequency” von <code>0</code> auf und daher nicht relevant für die spätere Darstellung.</p>
 <div class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 
 
@@ -215,154 +217,75 @@ ul.task-list li input[type="checkbox"] {
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">DisNo.</th>
-<th data-quarto-table-cell-role="th">Historic</th>
-<th data-quarto-table-cell-role="th">Classification Key</th>
-<th data-quarto-table-cell-role="th">Disaster Group</th>
-<th data-quarto-table-cell-role="th">Disaster Subgroup</th>
-<th data-quarto-table-cell-role="th">Disaster Type</th>
-<th data-quarto-table-cell-role="th">Disaster Subtype</th>
-<th data-quarto-table-cell-role="th">ISO</th>
 <th data-quarto-table-cell-role="th">Country</th>
-<th data-quarto-table-cell-role="th">Subregion</th>
-<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">Disaster Type</th>
 <th data-quarto-table-cell-role="th">Start Year</th>
-<th data-quarto-table-cell-role="th">Start Month</th>
-<th data-quarto-table-cell-role="th">Start Day</th>
-<th data-quarto-table-cell-role="th">End Year</th>
-<th data-quarto-table-cell-role="th">End Month</th>
-<th data-quarto-table-cell-role="th">End Day</th>
-<th data-quarto-table-cell-role="th">Total Deaths</th>
-<th data-quarto-table-cell-role="th">No. Affected</th>
-<th data-quarto-table-cell-role="th">Total Affected</th>
-<th data-quarto-table-cell-role="th">CPI</th>
+<th data-quarto-table-cell-role="th">ISO</th>
+<th data-quarto-table-cell-role="th">Frequency</th>
+<th data-quarto-table-cell-role="th">latitude</th>
+<th data-quarto-table-cell-role="th">longitude</th>
+<th data-quarto-table-cell-role="th">numeric</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>1920</td>
-<td>Yes</td>
-<td>nat-bio-epi-bac</td>
-<td>Natural</td>
-<td>Biological</td>
-<td>Epidemic</td>
-<td>Bacterial disease</td>
-<td>IND</td>
 <td>India</td>
-<td>Southern Asia</td>
-<td>...</td>
+<td>Epidemic</td>
 <td>1920</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>1920</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>2000000.0</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>6.832935e+09</td>
+<td>IND</td>
+<td>2.0</td>
+<td>20.0</td>
+<td>77.0</td>
+<td>356.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
-<td>1920</td>
-<td>Yes</td>
-<td>nat-bio-epi-bac</td>
-<td>Natural</td>
-<td>Biological</td>
-<td>Epidemic</td>
-<td>Bacterial disease</td>
-<td>IND</td>
 <td>India</td>
-<td>Southern Asia</td>
-<td>...</td>
-<td>1920</td>
+<td>Epidemic</td>
+<td>1921</td>
+<td>NaN</td>
+<td>0.0</td>
 <td>NaN</td>
 <td>NaN</td>
-<td>1920</td>
 <td>NaN</td>
-<td>NaN</td>
-<td>500000.0</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>6.832935e+09</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
-<td>1920</td>
-<td>Yes</td>
-<td>nat-hyd-flo-flo</td>
-<td>Natural</td>
-<td>Hydrological</td>
-<td>Flood</td>
-<td>Flood (General)</td>
-<td>DFR</td>
-<td>Germany</td>
-<td>Western Europe</td>
-<td>...</td>
-<td>1920</td>
-<td>8.0</td>
+<td>India</td>
+<td>Epidemic</td>
+<td>1922</td>
 <td>NaN</td>
-<td>1920</td>
-<td>8.0</td>
+<td>0.0</td>
 <td>NaN</td>
 <td>NaN</td>
 <td>NaN</td>
-<td>NaN</td>
-<td>6.832935e+09</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>1920</td>
-<td>Yes</td>
-<td>nat-geo-ear-gro</td>
-<td>Natural</td>
-<td>Geophysical</td>
-<td>Earthquake</td>
-<td>Ground movement</td>
-<td>CHN</td>
-<td>China</td>
-<td>Eastern Asia</td>
-<td>...</td>
-<td>1920</td>
-<td>12.0</td>
-<td>16.0</td>
-<td>1920</td>
-<td>12.0</td>
-<td>16.0</td>
-<td>180000.0</td>
+<td>India</td>
+<td>Epidemic</td>
+<td>1923</td>
+<td>NaN</td>
+<td>0.0</td>
 <td>NaN</td>
 <td>NaN</td>
-<td>6.832935e+09</td>
+<td>NaN</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>1920</td>
-<td>Yes</td>
-<td>nat-bio-epi-vir</td>
-<td>Natural</td>
-<td>Biological</td>
+<td>India</td>
 <td>Epidemic</td>
-<td>Viral disease</td>
-<td>AIA</td>
-<td>Anguilla</td>
-<td>Latin America and the Caribbean</td>
-<td>...</td>
-<td>1920</td>
+<td>1924</td>
+<td>IND</td>
 <td>1.0</td>
-<td>NaN</td>
-<td>1920</td>
-<td>1.0</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>NaN</td>
-<td>6.832935e+09</td>
+<td>20.0</td>
+<td>77.0</td>
+<td>356.0</td>
 </tr>
 </tbody>
 </table>
 
-<p>5 rows × 23 columns</p>
 </div>
 </div>
 </div>
@@ -371,7 +294,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="3.2" class="anchored" data-anchor-id="data-preparation-für-temperatur"><span class="header-section-number">3.2</span> Data Preparation für Temperatur:</h2>
 <p>Zu Beginn der Datenvorbereitung für den Datensatz wurde jedem Land eine eindeutige UID-Zelle zugewiesen und diese wurde befüllt. Anschließend wurde die Datenstruktur durch das Betrachten von Head und Tail überprüft, woraufhin die verbleibenden NaN-Werte entfernt wurden. Danach wurden die Datentypen betrachtet und angepasst. Hierbei erfolgte eine Änderung des Datetime-Formats und der Datentyp der Spalte “Country” wurde zu “Category” geändert. Anschließend wurde der DataFrame nach der Jahreszahl gefiltert und alle UID-Werte, die als “Unknown” gekennzeichnet waren, wurden entfernt. Nach dieser Aktion erfolgte die Verknüpfung mit den ISO-Ländercodes, wobei entsprechender Python-Code verwendet wurde. Anschließend wurden die Ländernamen an die Ländernamen des Datensatzes zu Naturkatastrophen angepasst. Zum Abschluss wurde eine CSV-Datei erstellt. Die verwendeten Bibliotheken waren Pandas und pycountry.</p>
 <div class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
@@ -445,26 +368,26 @@ ul.task-list li input[type="checkbox"] {
 <p>Um ein umfassenderes Verständnis für unsere Daten zu entwickeln und die Aussagekraft unserer Ergebnisse zu verstärken, haben wir mithilfe von Altair zunächst grundlegende Diagramme erstellt. Dies diente dazu, eine tiefere Einsicht in unsere Daten zu gewinnen. Wir begannen mit der Entwicklung eines Diagramms, das den Temperaturverlauf von 1920 bis 2013 zeigt. Anschließend erstellten wir ein Diagramm mit der Anzahl der Naturkatastrophen von 1920 bis 2013. Zusätzlich wurden weitere Balkendiagramme entworfen, um das Verhältnis verschiedener Naturkatastrophen zu visualisieren. Obwohl dieser Prozess mitunter anspruchsvoll war, erwies er sich als äußerst hilfreich für die Fortschritte in unserem Projekt. Die erstellten Diagramme ermöglichten uns tiefe Einblicke in unsere Daten zu gewinnen.</p>
 <p>Temperaturverlauf &amp; Katastrophen (Sturm, Hitze und Fluten ) 1920 bis 2013</p>
 <div class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div class="cell-output cell-output-display" data-execution_count="3">
 
 <style>
-  #altair-viz-ec7547b7c1554e129655b44ed0d83c69.vega-embed {
+  #altair-viz-75c3a17db141450b9af4698d60c058c9.vega-embed {
     width: 100%;
     display: flex;
   }
 
-  #altair-viz-ec7547b7c1554e129655b44ed0d83c69.vega-embed details,
-  #altair-viz-ec7547b7c1554e129655b44ed0d83c69.vega-embed details summary {
+  #altair-viz-75c3a17db141450b9af4698d60c058c9.vega-embed details,
+  #altair-viz-75c3a17db141450b9af4698d60c058c9.vega-embed details summary {
     position: relative;
   }
 </style>
-<div id="altair-viz-ec7547b7c1554e129655b44ed0d83c69"></div>
+<div id="altair-viz-75c3a17db141450b9af4698d60c058c9"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-ec7547b7c1554e129655b44ed0d83c69") {
-      outputDiv = document.getElementById("altair-viz-ec7547b7c1554e129655b44ed0d83c69");
+    if (outputDiv.id !== "altair-viz-75c3a17db141450b9af4698d60c058c9") {
+      outputDiv = document.getElementById("altair-viz-75c3a17db141450b9af4698d60c058c9");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
@@ -515,26 +438,26 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="cell" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="4">
 
 <style>
-  #altair-viz-8b325cab24194f9ab8196ea27a9c8a65.vega-embed {
+  #altair-viz-d31a17d9bcdd4f6abe71ea14b03c7f1f.vega-embed {
     width: 100%;
     display: flex;
   }
 
-  #altair-viz-8b325cab24194f9ab8196ea27a9c8a65.vega-embed details,
-  #altair-viz-8b325cab24194f9ab8196ea27a9c8a65.vega-embed details summary {
+  #altair-viz-d31a17d9bcdd4f6abe71ea14b03c7f1f.vega-embed details,
+  #altair-viz-d31a17d9bcdd4f6abe71ea14b03c7f1f.vega-embed details summary {
     position: relative;
   }
 </style>
-<div id="altair-viz-8b325cab24194f9ab8196ea27a9c8a65"></div>
+<div id="altair-viz-d31a17d9bcdd4f6abe71ea14b03c7f1f"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-8b325cab24194f9ab8196ea27a9c8a65") {
-      outputDiv = document.getElementById("altair-viz-8b325cab24194f9ab8196ea27a9c8a65");
+    if (outputDiv.id !== "altair-viz-d31a17d9bcdd4f6abe71ea14b03c7f1f") {
+      outputDiv = document.getElementById("altair-viz-d31a17d9bcdd4f6abe71ea14b03c7f1f");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",

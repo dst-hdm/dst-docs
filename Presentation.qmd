@@ -9,10 +9,8 @@
 - Fazit
 - Handlungsempfehlungen
 - Anmerkung
-Nachdem der Inhaltsangabe, erfolgt eine kurze Erläuterung zu unseren Quellen. Hier kann jedoch einfach auf [Kapitel 2](#quellen) verwiesen werden.
 
 ##  Erklärung zu den präsentierten Diagrammen 
-### Durschnittstemperatur Verlauf
 
 ```{python}
 #| echo: false
@@ -23,33 +21,14 @@ from vega_datasets import data
 
 alt.data_transformers.disable_max_rows()
 
-df_nd = pd.read_csv('./data/InternationalDisaster_cleaned.csv')
-df_nd_full = pd.read_csv('data/InternationalDisaster.csv')
 df_nd_grouped = pd.read_csv('data/InternationalDisaster_grouped.csv')
-df_temp = pd.read_csv('data/GlobalLandTemperatur_cleaned.csv')
 df_temp_agg = pd.read_csv('data/GlobalLandTemperatur_aggregated.csv')
 df_temp_nd_combined = pd.read_csv('data/df_temp_nd_combined.csv')
-countries = alt.topo_feature(data.world_110m.url, 'countries')
 
-chart_title_color = "#d6d6d6"
+chart_title_color = "#606061"
 chart_line_color = "#3A86FF"
 chart_marker_color = "#e00707"
-
-nd_type_colors = {
-    'Drought': '#FFBC42',
-    'Earthquake': '#b55a1d',
-    'Epidemic': '#06D6A0',
-    'Extreme temperature': '#EF476F',
-    'Flood': '#3A86FF',
-    'Fog': '#118AB2',
-    'Impact': '#16225c',
-    'Infestation': '#2f9e29',
-    'Mass movement (dry)': '#78259c',
-    'Mass movement (wet)': '#512599',
-    'Storm': '#287fa1',
-    'Volcanic activity': '#ab4c29',
-    'Wildfire': '#b52222'
-}
+chart_width = 590
 
 nd_type_colors = {
     'Drought': '#FFBC42',
@@ -73,7 +52,6 @@ nd_type_colors_red = {
     'Flood': nd_type_colors['Flood']
 }
 
-# | title: Iowa Electricity
 global_avg_temp = df_temp_agg.groupby(
     'Year')['AverageTemperature'].mean().reset_index()
 
@@ -96,15 +74,15 @@ glob_temp_chart = alt.Chart(global_avg_temp).mark_line(stroke=chart_line_color).
     y=alt.Y('AverageTemperature:Q', axis=alt.Axis(
         title='Temperatur in °C',
         titleAnchor='start',
-        labelColor='white',
+        labelColor='black',
         titleColor='black',
     ), scale=alt.Scale(
         domain=[18, 21])),
     tooltip=['Year', 'AverageTemperature']
 ).properties(
-    width=950,
+    width=chart_width,
     title={
-        "text": "Globaler Temperaturverlauf (1920 – 2013)",
+        "text": "Globaler Temperaturverlauf",
         "fontSize": 18,
         "fontWeight": 300,
         "anchor": 'start',
@@ -120,8 +98,8 @@ glob_temp_regression = glob_temp_chart.transform_regression(
 text_at_end = alt.Chart(pd.DataFrame({'end_position': [19.8]})).mark_text(
     align='left',
     baseline='middle',
-    dx=360,
-    dy=0,
+    dx=300,
+    dy=-40,
     color=chart_marker_color,
     text='Anstieg: 0.8 °C',
     fontWeight=800,
@@ -132,14 +110,17 @@ text_at_end = alt.Chart(pd.DataFrame({'end_position': [19.8]})).mark_text(
 
 
 glob_temp_chart.configure(background="rgba(0, 0, 0, 0)")
+
+(glob_temp_chart + glob_temp_regression +
+ text_at_end).configure(background="rgba(0, 0, 0, 0)")
 ```
 
 **Ziel:** 
 
-- Klarer und eindeutiger Visualisierung des Temperaturanstiegs um 0,8 Grad
+- Klarer und eindeutiger Visualisierung des Temperaturanstiegs um **0,8 Grad**
 
-
-### Globale Naturkatastrophen 
+<br>
+<br>
 
 ```{python}
 #| echo: false
@@ -164,10 +145,10 @@ nd_line_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_colo
         titleColor='black'
     ),
 ).properties(
-    width=950,
+    width=chart_width,
     height=290,
     title={
-        "text": "Weltweite Häufigkeit pro Jahr: Stürmen, Extremtemperaturen und Überschwemmungen (1920 – 2013)",
+        "text": "Weltweite Häufigkeit pro Jahr: Stürmen, Extremtemperaturen und Überschwemmungen",
         "fontSize": 18,
         "fontWeight": 300,
         "anchor": 'start',
@@ -180,6 +161,10 @@ nd_line_chart.configure(background="rgba(0, 0, 0, 0)")
 **Ziel:**
 
 - durch den Linechart bietet sich ein gute Möglichkeit den Trend der zunehmenden Häufigkeit darzustellen. 
+
+<br>
+<br>
+
 ```{python}
 #| echo: false
 
@@ -207,10 +192,10 @@ nd_flood_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_col
                     legend=None),
     tooltip=['Start Year', 'Frequency', 'Disaster Type']
 ).properties(
-    width=950,
+    width=chart_width,
     height=250,
     title={
-        "text": "Globale Häufigkeiten: Überschwemmungen (1920 – 2013)",
+        "text": "Globale Häufigkeiten: Überschwemmungen",
         "fontSize": 18,
         "fontWeight": 300,
         "anchor": 'start',
@@ -225,8 +210,6 @@ nd_flood_chart_text_point_2006 = alt.Chart(global_disaster_freq[(global_disaster
     y='Frequency:Q',
     text=alt.Text('Start Year:N', format='d')
 )
-
-nd_flood_chart.configure(background="rgba(0, 0, 0, 0)")
 ```
 ```{python}
 #| echo: false
@@ -238,6 +221,10 @@ nd_flood_chart.configure(background="rgba(0, 0, 0, 0)")
 
 - der Linechart veranschaulicht sehr gut, wie die Häufigkeit in den letzten 3 Jahrzehneten gestiegen ist, deswegen haben wir uns hier auch für ein Linechart entschieden 
 - der Rotepunkt ist leicht zu erkennen und zeigt dem Zuschauer direkt auf welche Sequenz wir uns gerade beziehen 
+
+<br>
+<br>
+
 ```{python}
 #| echo: false
 
@@ -265,10 +252,10 @@ nd_storm_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line_col
                     legend=None),
     tooltip=['Start Year', 'Frequency', 'Disaster Type']
 ).properties(
-    width=950,
+    width=chart_width,
     height=250,
     title={
-        "text": "Globale Häufigkeiten: Stürme (1920 – 2013)",
+        "text": "Globale Häufigkeiten: Stürme",
         "fontSize": 18,
         "fontWeight": 300,
         "anchor": 'start',
@@ -284,7 +271,6 @@ nd_storm_chart_text_point_1990 = alt.Chart(global_disaster_freq[(global_disaster
     text=alt.Text('Start Year:N', format='d')
 )
 
-nd_storm_chart.configure(background="rgba(0, 0, 0, 0)")
 (nd_storm_chart + nd_storm_chart_text_point_1990).configure(background="rgba(0, 0, 0, 0)")
 ```
 
@@ -293,6 +279,10 @@ nd_storm_chart.configure(background="rgba(0, 0, 0, 0)")
 - Der Linechart illustriertauch hier  überzeugend den Anstieg der Häufigkeit in den letzten drei Jahrzehnten. Aus diesem Grund haben wir uns für die Verwendung eines Linecharts entschieden.
 
 - Der rote Punkt ist gut erkennbar und zeigt dem Zuschauer sofort, auf welche Sequenz wir uns aktuell beziehen.
+
+<br>
+<br>
+
 ```{python}
 #| echo: false
 
@@ -320,10 +310,10 @@ nd_extr_temp_chart = alt.Chart(global_disaster_freq).mark_line(stroke=chart_line
                     legend=None),
     tooltip=['Start Year', 'Frequency', 'Disaster Type']
 ).properties(
-    width=950,
+    width=chart_width,
     height=250,
     title={
-        "text": "Globale Häufigkeiten: Extremtemperaturen (1920 – 2013)",
+        "text": "Globale Häufigkeiten: Extremtemperaturen",
         "fontSize": 18,
         "fontWeight": 300,
         "anchor": 'start',
@@ -338,8 +328,6 @@ nd_extr_temp_chart_text_point_2012 = alt.Chart(global_disaster_freq[(global_disa
     y='Frequency:Q',
     text=alt.Text('Start Year:N', format='d')
 )
-
-nd_extr_temp_chart.configure(background="rgba(0, 0, 0, 0)")
 ```
 ```{python}
 #| echo: false
@@ -352,6 +340,9 @@ nd_extr_temp_chart.configure(background="rgba(0, 0, 0, 0)")
 
 - auch hier ist wieder ein Linechart zu erkennen, damit klar der Anstieg der Häufigkeit zu erkennen ist 
 
+<br>
+<br>
+
 ```{python}
 #| echo: false
 
@@ -361,27 +352,28 @@ global_disaster_freq = df_temp_nd_combined.groupby(['AverageTemperature', 'Disas
 global_disaster_freq_filtered = global_disaster_freq[(global_disaster_freq['Disaster Type'] == 'Flood') | (
     global_disaster_freq['Disaster Type'] == 'Storm') | (global_disaster_freq['Disaster Type'] == 'Extreme temperature')]
 
+min_temp = int(global_disaster_freq_filtered['AverageTemperature'].min())
+max_temp = int(global_disaster_freq_filtered['AverageTemperature'].max())
+
+x_values = list(range(min_temp, max_temp + 1))
+
 nd_temp_scatter = alt.Chart(global_disaster_freq_filtered).mark_circle().encode(
     x=alt.X('AverageTemperature:O', title='Durchschnittstemperatur in °C ',
-            axis=alt.Axis(format=".3f",
-                          titleAnchor='start',
-                          titleColor="black",
-                          labelColor="black"
-                          )),
+            axis=alt.Axis(titleAnchor='start',
+                          format=".3f",
+            )),
     y=alt.Y('Frequency:Q', axis=alt.Axis(
         title='Häufigkeit',
         titleAnchor='start',
-        titleColor="black",
-        labelColor="black"
     )),
     color=alt.Color('Disaster Type',
                     title='Katastrophentyp',
                     scale=alt.Scale(domain=list(nd_type_colors_red.keys()),
                                     range=list(nd_type_colors_red.values())),
-                    legend=alt.Legend(labelColor="white", titleColor="white")),
+                    legend=alt.Legend(orient='bottom')), 
     tooltip=['AverageTemperature', 'Frequency', 'Disaster Type']
 ).properties(
-    width=850,
+    width=900,
     height=400,
     title={
         "text": "Häufigkeit der Katastrophentypen im Zusammenhang mit der Temperatur",
@@ -402,65 +394,11 @@ nd_temp_scatter.configure(background="rgba(0, 0, 0, 0)")
 - Ein Scatterplot wird verwendet, um den Einfluss steigender Temperaturen auf die Häufigkeit von Naturkatastrophen klar zu veranschaulichen.
 - wir haben uns auch  für diese Folie entschieden, da wir uns damit direkt auf unsere Leitfrage wieder beziehen können und somit wieder auf unsere Storyline zurück kommen 
 
-```{=html}
-<div class="infoCards">
-    <div class="infoCard bg-hot">
-        <div class="flexBetween">
-            <p>20 bis 30 °C</p>
-            <p>Katastrophen</p>
-        </div>
-        <hr>
-        <div class="flexBetween leftReset">
-            <h1>Heiß</h1>
-            <h1>4397</h1>
-        </div>
-    </div>
-    <div class="infoCard bg-warm">
-        <div class="flexBetween">
-            <p>10 bis 20 °C</p>
-            <p>Katastrophen</p>
-        </div>
-        <hr>
-        <div class="flexBetween leftReset">
-            <h1>Warm</h1>
-            <h1>1462</h1>
-        </div>
-    </div>
-    <div class="infoCard bg-normal">
-        <div class="flexBetween">
-            <p>0 bis 10 °C</p>
-            <p>Katastrophen</p>
-        </div>
-        <hr>
-        <div class="flexBetween leftReset">
-            <h1>Normal</h1>
-            <h1>1033</h1>
-        </div>
-    </div>
-    <div class="infoCard bg-cold">
-        <div class="flexBetween">
-            <p>-10 bis 0 °C</p>
-            <p>Katastrophen</p>
-        </div>
-        <hr>
-        <div class="flexBetween leftReset">
-            <h1>Kalt</h1>
-            <h1>99</h1>
-        </div>
-    </div>
-    <div class="infoCard bg-ice">
-        <div class="flexBetween">
-            <p>-20 bis -10 °C</p>
-            <p>Katastrophen</p>
-        </div>
-        <hr>
-        <div class="flexBetween leftReset">
-            <h1>Sehr kalt</h1>
-            <h1>13</h1>
-        </div>
-    </div>
-</div>
-```
+<br>
+<br>
+
+![Darstellung der Temperaturzonen](images/Tempzonen.png)
+
 **Ziel:**
 
 - Hervorheben der variierenden Auswirkungen in unterschiedlichen Temperaturzonen.
@@ -476,3 +414,4 @@ Es sei anzumerken, dass die Handlungsempfehlungen bewusst in kurzer und prägnan
 <br>
 Zum Abschluss erfolgt eine kurze Anmerkung, welche auf die begrenzte Zeit der Präsentation und die nicht vollständige Erschöpfung aller Projektdetails hinweist.
 
+[Link zum GitHub Repository](https://github.com/dst-hdm/dst-docs)
